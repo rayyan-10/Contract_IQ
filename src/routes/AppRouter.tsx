@@ -5,6 +5,7 @@ import { LoginPage } from '@/pages/auth/LoginPage';
 import { SignupPage } from '@/pages/auth/SignupPage';
 import { CmsDashboard } from '@/pages/cms/CmsDashboard';
 import { PredictionsPage } from '@/pages/cms/PredictionsPage';
+import { CmsAnalytics } from '@/pages/cms/CmsAnalytics';
 import { AcoDashboard } from '@/pages/aco/AcoDashboard';
 import { AcoAnalytics } from '@/pages/aco/AcoAnalytics';
 import { PlaceholderPage } from '@/components/dashboard/PlaceholderPage';
@@ -25,6 +26,7 @@ export function AppRouter() {
             {/* CMS-only routes */}
             <Route element={<CmsRoute />}>
               <Route path="/cms/dashboard"       element={<CmsDashboard />} />
+              <Route path="/cms/analytics"       element={<CmsAnalytics />} />
               <Route path="/cms/predictions"     element={<PredictionsPage />} />
               <Route path="/cms/risk"            element={<PlaceholderPage title="Risk Analysis"   subtitle="RAF score modeling and risk stratification"           breadcrumb={['CMS Analytics', 'Risk Analysis']} />} />
               <Route path="/cms/forecast"        element={<PlaceholderPage title="Forecast"        subtitle="Budget impact and savings trajectory modeling"        breadcrumb={['CMS Analytics', 'Forecast']} />} />
