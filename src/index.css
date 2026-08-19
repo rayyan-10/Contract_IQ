@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  body {
+    @apply bg-surface text-slate-800 antialiased;
+  }
+
+  * {
+    @apply border-surface-border;
+  }
+}
+
+@layer components {
+  .sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-500 hover:bg-brand-50 hover:text-brand-700 transition-colors duration-150 cursor-pointer;
+  }
+  .sidebar-item.active {
+    @apply bg-brand-50 text-brand-700;
+  }
+  .sidebar-item-icon {
+    @apply w-4 h-4 flex-shrink-0;
+  }
+
+  .kpi-card {
+    @apply bg-white rounded-xl shadow-card p-5 border border-surface-border;
+  }
+
+  .chart-card {
+    @apply bg-white rounded-xl shadow-card p-5 border border-surface-border;
+  }
+
+  .data-table {
+    @apply w-full text-sm;
+  }
+  .data-table th {
+    @apply text-left text-xs font-semibold text-slate-500 uppercase tracking-wide py-3 px-4 border-b border-surface-border;
+  }
+  .data-table td {
+    @apply py-3 px-4 border-b border-surface-border text-slate-700;
+  }
+  .data-table tr:hover td {
+    @apply bg-slate-50;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { @apply bg-transparent; }
+::-webkit-scrollbar-thumb { @apply bg-slate-300 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-slate-400; }
