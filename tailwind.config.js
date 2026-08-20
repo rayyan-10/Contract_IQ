@@ -51,4 +51,9 @@ export default {
     },
   },
   plugins: [],
+  safelist: [
+    { pattern: /^bg-(white|black)\/(5|10|20|25)$/ },
+    { pattern: /^border-(white|black)\/(5|10|20|25)$/ },
+    { pattern: /^(bg|text|border)-(indigo|emerald|violet|sky|amber|rose|slate)-(500|400|300|200)\/(10|15|20|25)$/ },
+  ],
 }

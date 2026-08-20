@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { SignupPage } from '@/pages/auth/SignupPage';
+import { LandingPage } from '@/pages/LandingPage';
 import { CmsDashboard } from '@/pages/cms/CmsDashboard';
 import { PredictionsPage } from '@/pages/cms/PredictionsPage';
 import { CmsAnalytics } from '@/pages/cms/CmsAnalytics';
@@ -15,7 +16,8 @@ export function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public auth routes */}
+        {/* Public routes */}
+        <Route path="/"       element={<LandingPage />} />
         <Route path="/login"  element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
 
@@ -31,7 +33,6 @@ export function AppRouter() {
               <Route path="/cms/risk"            element={<PlaceholderPage title="Risk Analysis"   subtitle="RAF score modeling and risk stratification"           breadcrumb={['CMS Analytics', 'Risk Analysis']} />} />
               <Route path="/cms/forecast"        element={<PlaceholderPage title="Forecast"        subtitle="Budget impact and savings trajectory modeling"        breadcrumb={['CMS Analytics', 'Forecast']} />} />
               <Route path="/cms/twin-aco"        element={<PlaceholderPage title="Twin ACO"        subtitle="Peer cohort comparison and benchmark analysis"        breadcrumb={['CMS Analytics', 'Twin ACO']} />} />
-              <Route path="/cms/recommendations" element={<PlaceholderPage title="Recommendations" subtitle="AI-generated contract optimization insights"          breadcrumb={['CMS Analytics', 'Recommendations']} />} />
               <Route path="/cms/reports"         element={<PlaceholderPage title="Reports"         subtitle="Regulatory and performance reporting suite"           breadcrumb={['CMS Analytics', 'Reports']} />} />
             </Route>
 
@@ -42,7 +43,6 @@ export function AppRouter() {
               <Route path="/aco/providers"         element={<PlaceholderPage title="Providers"         subtitle="Provider performance and attribution management"                    breadcrumb={['ACO Operations', 'Providers']} />} />
               <Route path="/aco/peer-benchmarking" element={<PlaceholderPage title="Peer Benchmarking" subtitle="Compare performance against peer ACOs and national benchmarks"     breadcrumb={['ACO Operations', 'Peer Benchmarking']} />} />
               <Route path="/aco/forecast"          element={<PlaceholderPage title="Forecast"          subtitle="Savings trajectory and shared savings projections"                 breadcrumb={['ACO Operations', 'Forecast']} />} />
-              <Route path="/aco/recommendations"   element={<PlaceholderPage title="Recommendations"   subtitle="Clinical and operational improvement recommendations"              breadcrumb={['ACO Operations', 'Recommendations']} />} />
               <Route path="/aco/reports"           element={<PlaceholderPage title="Reports"           subtitle="ACO performance and compliance reporting"                          breadcrumb={['ACO Operations', 'Reports']} />} />
             </Route>
 
