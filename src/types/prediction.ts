@@ -1,6 +1,8 @@
 // ─── Prediction Types ─────────────────────────────────────────────────────────
-// Service abstraction — replace predictionService.ts with real API calls later.
-// Keep types aligned with what the service actually returns.
+// Aligned with FastAPI backend endpoints:
+//   POST /risk/predict
+//   POST /forecast/predict
+//   POST /twin/find
 
 export interface PredictionInputs {
   n_ab: number;
@@ -13,9 +15,14 @@ export interface PredictionInputs {
   qualityChange: number;
 }
 
+// Payload sent to backend (ID + inputs)
+export interface PredictionPayload extends PredictionInputs {
+  acoId: string;
+}
+
 export type AnalysisType = 'risk' | 'performance' | 'twin';
 
-// ─── Risk ─────────────────────────────────────────────────────────────────────
+// ─── Risk (from POST /risk/predict) ──────────────────────────────────────────
 
 export interface RiskFactor {
   factor: string;
@@ -25,16 +32,20 @@ export interface RiskFactor {
 
 export interface RiskPredictionResult {
   type: 'risk';
+  acoId: string;
+  atRisk: boolean;
+  riskProbability: number;         // 0–1 from model
   riskLevel: 'low' | 'moderate' | 'high' | 'critical';
-  riskScore: number;
+  riskScore: number;               // 0–100 scaled
   contributingFactors: RiskFactor[];
   summary: string;
 }
 
-// ─── Performance Forecast ─────────────────────────────────────────────────────
+// ─── Forecast (from POST /forecast/predict) ──────────────────────────────────
 
 export interface PerformanceForecastResult {
   type: 'performance';
+  acoId: string;
   projectedSavingsRate: number;
   projectedQualityScore: number;
   trend: 'improving' | 'stable' | 'declining';
@@ -42,7 +53,7 @@ export interface PerformanceForecastResult {
   summary: string;
 }
 
-// ─── Twin ACO ─────────────────────────────────────────────────────────────────
+// ─── Twin (from POST /twin/find) ─────────────────────────────────────────────
 
 export interface TwinAcoMatch {
   acoId: string;
@@ -55,6 +66,7 @@ export interface TwinAcoMatch {
 
 export interface TwinAcoResult {
   type: 'twin';
+  acoId: string;
   matches: TwinAcoMatch[];
   summary: string;
 }

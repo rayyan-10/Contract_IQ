@@ -138,19 +138,22 @@ function CmsForm({ onBack }: { onBack: () => void }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     if (!name.trim() || !email.trim() || !password || !confirm) { setError('All fields are required.'); return; }
     if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
     if (password !== confirm) { setError('Passwords do not match.'); return; }
     setLoading(true);
-    setTimeout(() => {
-      const r = signupCms({ name: name.trim(), email: email.trim(), password });
+    try {
+      const r = await signupCms({ name: name.trim(), email: email.trim(), password });
       setLoading(false);
       if (!r.success) { setError(r.error ?? 'Signup failed.'); return; }
       navigate('/cms/dashboard', { replace: true });
-    }, 400);
+    } catch {
+      setLoading(false);
+      setError('Unable to connect. Please try again.');
+    }
   };
 
   return (
@@ -217,19 +220,22 @@ function AcoForm({ onBack }: { onBack: () => void }) {
   const [error, setError]     = useState('');
   const [loading, setLoading] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     if (!name.trim() || !email.trim() || !password || !confirm || !acoName.trim() || !acoId.trim()) { setError('All fields are required.'); return; }
     if (password.length < 6) { setError('Password must be at least 6 characters.'); return; }
     if (password !== confirm) { setError('Passwords do not match.'); return; }
     setLoading(true);
-    setTimeout(() => {
-      const r = signupAco({ name: name.trim(), email: email.trim(), password, acoName: acoName.trim(), acoId: acoId.trim() });
+    try {
+      const r = await signupAco({ name: name.trim(), email: email.trim(), password, acoName: acoName.trim(), acoId: acoId.trim() });
       setLoading(false);
       if (!r.success) { setError(r.error ?? 'Signup failed.'); return; }
       navigate('/aco/dashboard', { replace: true });
-    }, 400);
+    } catch {
+      setLoading(false);
+      setError('Unable to connect. Please try again.');
+    }
   };
 
   return (

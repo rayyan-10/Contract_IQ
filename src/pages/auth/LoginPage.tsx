@@ -18,7 +18,7 @@ export function LoginPage() {
   const [error, setError]       = useState('');
   const [loading, setLoading]   = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     if (!email.trim() || !password.trim()) {
@@ -26,12 +26,15 @@ export function LoginPage() {
       return;
     }
     setLoading(true);
-    setTimeout(() => {
-      const result = login({ email: email.trim(), password });
+    try {
+      const result = await login({ email: email.trim(), password });
       setLoading(false);
       if (!result.success) { setError(result.error ?? 'Login failed.'); return; }
       navigate(result.user?.role === 'ACO' ? '/aco/dashboard' : '/cms/dashboard', { replace: true });
-    }, 400);
+    } catch {
+      setLoading(false);
+      setError('Unable to connect. Please try again.');
+    }
   };
 
   return (

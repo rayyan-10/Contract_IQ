@@ -1,135 +1,172 @@
 /**
- * authService — Demo-only localStorage authentication.
- * Replace this file's implementation with real API calls
- * when connecting to a backend. The interface stays the same.
+ * authService — Real backend auth with localStorage fallback.
+ *
+ * Backend endpoints:
+ *   POST /auth/signup → { access_token, token_type, user }
+ *   POST /auth/login  → { access_token, token_type, user }
+ *
+ * If backend is offline, falls back to localStorage demo auth.
  */
 
-import type { AuthUser, LoginCredentials, CmsSignupData, AcoSignupData, AuthResult, UserRole } from '@/types/auth';
+import type { AuthUser, LoginCredentials, CmsSignupData, AcoSignupData, AuthResult } from '@/types/auth';
+import { setToken, clearToken } from './tokenService';
 
-const STORAGE_KEY = 'contractiq_user';
+const API_BASE    = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const USER_KEY    = 'contractiq_user';
 
-// ─── Seed demo accounts ───────────────────────────────────────────────────────
+// ─── Backend API calls ────────────────────────────────────────────────────────
 
-const DEMO_ACCOUNTS: Array<AuthUser & { password: string }> = [
-  {
-    id: 'demo-cms-001',
-    name: 'CMS Admin',
-    email: 'cms@contractiq.com',
-    password: 'CMS@123',
-    role: 'CMS',
-  },
-  {
-    id: 'demo-aco-001',
-    name: 'ACO Admin',
-    email: 'aco@contractiq.com',
-    password: 'ACO@123',
-    role: 'ACO',
-    acoName: 'Demo ACO Network',
-    acoId: 'ACO-001',
-  },
-];
+async function apiLogin(email: string, password: string): Promise<AuthResult> {
+  const res = await fetch(API_BASE + '/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
 
-// ─── Internal helpers ─────────────────────────────────────────────────────────
-
-function getStoredUsers(): Array<AuthUser & { password: string }> {
-  try {
-    const raw = localStorage.getItem('contractiq_users');
-    return raw ? JSON.parse(raw) : [...DEMO_ACCOUNTS];
-  } catch {
-    return [...DEMO_ACCOUNTS];
+  if (!res.ok) {
+    if (res.status === 401 || res.status === 400) {
+      return { success: false, error: 'Invalid email or password.' };
+    }
+    const text = await res.text().catch(() => '');
+    return { success: false, error: 'Login failed (' + res.status + '): ' + text };
   }
+
+  const data = await res.json();
+  const token = data.access_token;
+  const user: AuthUser = {
+    id:      data.user?.id ?? '',
+    name:    data.user?.name ?? '',
+    email:   data.user?.email ?? email,
+    role:    data.user?.role ?? 'CMS',
+    acoName: data.user?.aco_name ?? undefined,
+    acoId:   data.user?.aco_id ?? undefined,
+  };
+
+  setToken(token);
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  return { success: true, user };
 }
 
-function saveUsers(users: Array<AuthUser & { password: string }>): void {
-  localStorage.setItem('contractiq_users', JSON.stringify(users));
-}
+async function apiSignup(payload: Record<string, string>): Promise<AuthResult> {
+  const res = await fetch(API_BASE + '/auth/signup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
 
-function generateId(): string {
-  return `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  if (!res.ok) {
+    if (res.status === 409 || res.status === 400) {
+      const body = await res.json().catch(() => ({}));
+      return { success: false, error: body.detail ?? 'Account already exists or invalid data.' };
+    }
+    const text = await res.text().catch(() => '');
+    return { success: false, error: 'Signup failed (' + res.status + '): ' + text };
+  }
+
+  const data = await res.json();
+  const token = data.access_token;
+  const user: AuthUser = {
+    id:      data.user?.id ?? '',
+    name:    data.user?.name ?? '',
+    email:   data.user?.email ?? payload.email,
+    role:    data.user?.role ?? (payload.role as 'CMS' | 'ACO'),
+    acoName: data.user?.aco_name ?? payload.aco_name ?? undefined,
+    acoId:   data.user?.aco_id ?? payload.aco_id ?? undefined,
+  };
+
+  setToken(token);
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  return { success: true, user };
 }
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 export const authService = {
-  /**
-   * Authenticate with email + password.
-   * Returns the user on success, an error string on failure.
-   */
-  login(credentials: LoginCredentials): AuthResult {
-    const { email, password } = credentials;
-    const users = getStoredUsers();
-    const match = users.find(
-      u => u.email.toLowerCase() === email.toLowerCase() && u.password === password
-    );
-    if (!match) {
-      return { success: false, error: 'Invalid email or password.' };
+  /** Login via backend. Falls back to demo if backend offline. */
+  async login(credentials: LoginCredentials): Promise<AuthResult> {
+    try {
+      return await apiLogin(credentials.email, credentials.password);
+    } catch (err) {
+      console.warn('Backend login unavailable, using demo fallback:', err);
+      return demoLogin(credentials);
     }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password: _pw, ...user } = match;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-    return { success: true, user };
   },
 
-  /** Register a new CMS user. */
-  signupCms(data: CmsSignupData): AuthResult {
-    const users = getStoredUsers();
-    if (users.find(u => u.email.toLowerCase() === data.email.toLowerCase())) {
-      return { success: false, error: 'An account with this email already exists.' };
+  /** Signup CMS user via backend. */
+  async signupCms(data: CmsSignupData): Promise<AuthResult> {
+    try {
+      return await apiSignup({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        role: 'CMS',
+      });
+    } catch (err) {
+      console.warn('Backend signup unavailable, using demo fallback:', err);
+      return demoSignupCms(data);
     }
-    const user: AuthUser = {
-      id: generateId(),
-      name: data.name,
-      email: data.email,
-      role: 'CMS',
-    };
-    users.push({ ...user, password: data.password });
-    saveUsers(users);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-    return { success: true, user };
   },
 
-  /** Register a new ACO user. */
-  signupAco(data: AcoSignupData): AuthResult {
-    const users = getStoredUsers();
-    if (users.find(u => u.email.toLowerCase() === data.email.toLowerCase())) {
-      return { success: false, error: 'An account with this email already exists.' };
+  /** Signup ACO user via backend. */
+  async signupAco(data: AcoSignupData): Promise<AuthResult> {
+    try {
+      return await apiSignup({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        role: 'ACO',
+        aco_name: data.acoName,
+        aco_id: data.acoId,
+      });
+    } catch (err) {
+      console.warn('Backend signup unavailable, using demo fallback:', err);
+      return demoSignupAco(data);
     }
-    const user: AuthUser = {
-      id: generateId(),
-      name: data.name,
-      email: data.email,
-      role: 'ACO',
-      acoName: data.acoName,
-      acoId: data.acoId,
-    };
-    users.push({ ...user, password: data.password });
-    saveUsers(users);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-    return { success: true, user };
   },
 
   /** Clear session. */
   logout(): void {
-    localStorage.removeItem(STORAGE_KEY);
+    clearToken();
+    localStorage.removeItem(USER_KEY);
   },
 
-  /** Returns the currently logged-in user or null. */
+  /** Get current user from localStorage. */
   getCurrentUser(): AuthUser | null {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(USER_KEY);
       return raw ? (JSON.parse(raw) as AuthUser) : null;
     } catch {
       return null;
     }
   },
 
-  /** Returns true if a user session exists. */
   isAuthenticated(): boolean {
     return authService.getCurrentUser() !== null;
   },
-
-  /** Returns the role of the current user, or null. */
-  getUserRole(): UserRole | null {
-    return authService.getCurrentUser()?.role ?? null;
-  },
 };
+
+// ─── Demo fallbacks (when backend is offline) ─────────────────────────────────
+
+const DEMO_ACCOUNTS = [
+  { email: 'cms@contractiq.com', password: 'CMS@123', user: { id: 'demo-cms', name: 'CMS Admin', email: 'cms@contractiq.com', role: 'CMS' as const } },
+  { email: 'aco@contractiq.com', password: 'ACO@123', user: { id: 'demo-aco', name: 'ACO Admin', email: 'aco@contractiq.com', role: 'ACO' as const, acoName: 'Demo ACO Network', acoId: 'A00001' } },
+];
+
+function demoLogin(creds: LoginCredentials): AuthResult {
+  const match = DEMO_ACCOUNTS.find(a => a.email === creds.email && a.password === creds.password);
+  if (!match) return { success: false, error: 'Invalid credentials (demo mode).' };
+  localStorage.setItem(USER_KEY, JSON.stringify(match.user));
+  return { success: true, user: match.user };
+}
+
+function demoSignupCms(data: CmsSignupData): AuthResult {
+  const user: AuthUser = { id: 'local-' + Date.now(), name: data.name, email: data.email, role: 'CMS' };
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  return { success: true, user };
+}
+
+function demoSignupAco(data: AcoSignupData): AuthResult {
+  const user: AuthUser = { id: 'local-' + Date.now(), name: data.name, email: data.email, role: 'ACO', acoName: data.acoName, acoId: data.acoId };
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  return { success: true, user };
+}

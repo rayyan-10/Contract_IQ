@@ -10,6 +10,7 @@ import { MetricInput } from '@/components/prediction/MetricInput';
 import { AnalysisCard } from '@/components/prediction/AnalysisCard';
 import { InputProgress } from '@/components/prediction/InputProgress';
 import { WorkflowStepper } from '@/components/prediction/WorkflowStepper';
+import { ResultsDisplay } from '@/components/prediction/ResultsDisplay';
 import type { AnalysisType, PredictionInputs } from '@/types/prediction';
 import { predictRisk, predictPerformance, findTwinACOs } from '@/services/predictionService';
 
@@ -205,14 +206,18 @@ export function PredictionsPage() {
   };
 
   // ── Run analysis ──────────────────────────────────────────────────────────
+  const [analysisResult, setAnalysisResult] = useState<import('@/types/prediction').PredictionResult | null>(null);
+
   const handleRunAnalysis = async () => {
     if (!selectedType || !allComplete) return;
     setRunning(true);
     const inputs = buildInputs();
     try {
-      if (selectedType === 'risk')        await predictRisk(inputs);
-      if (selectedType === 'performance') await predictPerformance(inputs);
-      if (selectedType === 'twin')        await findTwinACOs(inputs);
+      let result: import('@/types/prediction').PredictionResult | null = null;
+      if (selectedType === 'risk')        result = await predictRisk(selectedAcoId, inputs);
+      if (selectedType === 'performance') result = await predictPerformance(selectedAcoId, inputs);
+      if (selectedType === 'twin')        result = await findTwinACOs(selectedAcoId, inputs);
+      setAnalysisResult(result);
       setStep('result');
     } finally {
       setRunning(false);
@@ -226,6 +231,7 @@ export function PredictionsPage() {
     setErrors(EMPTY_ERRORS);
     setTouched(new Set());
     setSelectedType(null);
+    setAnalysisResult(null);
     setStep('inputs');
   };
 
@@ -249,41 +255,39 @@ export function PredictionsPage() {
   ];
 
   // ─── Result screen ────────────────────────────────────────────────────────
-  if (step === 'result') {
+  if (step === 'result' && analysisResult) {
     return (
       <>
         <PageHeader
           title="Prediction & Scenario Analysis"
-          subtitle="Analyze ACO performance using financial, quality, expenditure and beneficiary indicators."
-          breadcrumb={['CMS Analytics', 'Predictions']}
+          subtitle={'Results for ' + selectedAcoId + ' — ' + ANALYSIS_OPTIONS.find(a => a.type === selectedType)?.title}
+          breadcrumb={['CMS Analytics', 'Predictions', 'Results']}
           actions={
             <Button variant="secondary" size="sm" icon={<RotateCcw className="w-3.5 h-3.5" />} onClick={handleReset}>
               New Analysis
             </Button>
           }
         />
-        <Card>
-          <div className="flex flex-col items-center justify-center gap-4 py-20 text-center">
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-brand-50">
-              {selectedType === 'risk'        && <AlertTriangle className="w-8 h-8 text-brand-600" />}
-              {selectedType === 'performance' && <TrendingUp    className="w-8 h-8 text-brand-600" />}
-              {selectedType === 'twin'        && <GitBranch     className="w-8 h-8 text-brand-600" />}
-            </div>
-            <div>
-              <p className="text-base font-semibold text-slate-800">Analysis Complete</p>
-              <p className="text-sm text-slate-400 mt-1 max-w-sm">
-                {ANALYSIS_OPTIONS.find(a => a.type === selectedType)?.title} results will be displayed here in the next phase.
-              </p>
-            </div>
-            <div className="flex items-center gap-2 mt-2 p-3 rounded-lg bg-slate-50 border border-surface-border text-xs text-slate-500 font-mono max-w-lg w-full text-left">
-              <span className="text-slate-300">payload →</span>
-              <span className="text-brand-600 truncate">{JSON.stringify({ acoId: selectedAcoId, ...buildInputs() })}</span>
-            </div>
-            <Button variant="secondary" size="sm" icon={<RotateCcw className="w-3.5 h-3.5" />} onClick={handleReset}>
-              Run another analysis
-            </Button>
-          </div>
+
+        {/* Stepper showing completed */}
+        <Card className="mb-5">
+          <WorkflowStepper steps={[
+            { number: '01', label: 'Enter Metrics',   status: 'completed' },
+            { number: '02', label: 'Select Analysis', status: 'completed' },
+            { number: '03', label: 'View Prediction', status: 'active'    },
+          ]} />
         </Card>
+
+        {/* Results */}
+        <ResultsDisplay result={analysisResult} />
+
+        {/* Payload debug (collapsed) */}
+        <details className="mt-5">
+          <summary className="text-xs text-slate-400 cursor-pointer hover:text-slate-600">Show raw payload (for debugging)</summary>
+          <pre className="mt-2 p-3 rounded-lg bg-slate-50 border border-surface-border text-xs text-slate-500 font-mono overflow-x-auto whitespace-pre-wrap">
+            {JSON.stringify({ acoId: selectedAcoId, ...buildInputs() }, null, 2)}
+          </pre>
+        </details>
       </>
     );
   }
