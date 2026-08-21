@@ -2,7 +2,7 @@ import React from 'react';
 import {
   LayoutDashboard, TrendingUp, AlertTriangle, BarChart3,
   GitBranch, FileText, Users, Network,
-  LineChart, BookOpen, PieChart,
+  LineChart, BookOpen, PieChart, Award,
 } from 'lucide-react';
 import type { NavGroup } from '@/types';
 
@@ -13,6 +13,7 @@ export const cmsNavGroups: NavGroup[] = [
       { label: 'Dashboard',        path: '/cms/dashboard',        icon: LayoutDashboard },
       { label: 'Analytics',        path: '/cms/analytics',        icon: PieChart        },
       { label: 'Predictions',      path: '/cms/predictions',      icon: TrendingUp      },
+      { label: 'Quality',          path: '/cms/quality',          icon: Award           },
       { label: 'Risk Analysis',    path: '/cms/risk',             icon: AlertTriangle   },
       { label: 'Forecast',         path: '/cms/forecast',         icon: BarChart3       },
       { label: 'Twin ACO',         path: '/cms/twin-aco',         icon: GitBranch       },
