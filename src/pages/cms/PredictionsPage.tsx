@@ -1,16 +1,29 @@
 import React, { useState, useCallback } from 'react';
 import {
-  AlertTriangle, TrendingUp, GitBranch, Play, RotateCcw,
+  AlertTriangle, TrendingUp, GitBranch, Play, RotateCcw, Building2,
 } from 'lucide-react';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Card } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
+import { Select } from '@/components/common/Select';
 import { MetricInput } from '@/components/prediction/MetricInput';
 import { AnalysisCard } from '@/components/prediction/AnalysisCard';
 import { InputProgress } from '@/components/prediction/InputProgress';
 import { WorkflowStepper } from '@/components/prediction/WorkflowStepper';
 import type { AnalysisType, PredictionInputs } from '@/types/prediction';
 import { predictRisk, predictPerformance, findTwinACOs } from '@/services/predictionService';
+
+// ─── Mock ACO IDs (will be fetched from DB later) ─────────────────────────────
+// Format: A00001, A00002, ... Only the ID is stored in DB (no name).
+
+const ACO_OPTIONS = [
+  { value: '',       label: '— Select an ACO —' },
+  { value: 'A00001', label: 'A00001 · Northeast Health Alliance' },
+  { value: 'A00002', label: 'A00002 · Midwest Premier Care Network' },
+  { value: 'A00003', label: 'A00003 · Gulf Coast Care Network' },
+  { value: 'A00004', label: 'A00004 · Mountain West Health Partners' },
+  { value: 'A00005', label: 'A00005 · Pacific Coast ACO Alliance' },
+];
 
 // ─── Field definitions ────────────────────────────────────────────────────────
 
@@ -140,6 +153,7 @@ const ANALYSIS_OPTIONS: Array<{
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export function PredictionsPage() {
+  const [selectedAcoId, setSelectedAcoId] = useState('');
   const [values, setValues]       = useState<FieldValues>(EMPTY_VALUES);
   const [errors, setErrors]       = useState<FieldErrors>(EMPTY_ERRORS);
   const [touched, setTouched]     = useState<Set<keyof PredictionInputs>>(new Set());
@@ -162,7 +176,7 @@ export function PredictionsPage() {
     return raw.trim() !== '' && !validate(f.key, raw, f.allowNegative);
   });
   const completedCount = completedFields.length;
-  const allComplete    = completedCount === FIELDS.length;
+  const allComplete    = completedCount === FIELDS.length && selectedAcoId !== '';
 
   // ── Build validated inputs object ─────────────────────────────────────────
   const buildInputs = (): PredictionInputs => ({
@@ -207,6 +221,7 @@ export function PredictionsPage() {
 
   // ── Reset ─────────────────────────────────────────────────────────────────
   const handleReset = () => {
+    setSelectedAcoId('');
     setValues(EMPTY_VALUES);
     setErrors(EMPTY_ERRORS);
     setTouched(new Set());
@@ -261,8 +276,8 @@ export function PredictionsPage() {
               </p>
             </div>
             <div className="flex items-center gap-2 mt-2 p-3 rounded-lg bg-slate-50 border border-surface-border text-xs text-slate-500 font-mono max-w-lg w-full text-left">
-              <span className="text-slate-300">inputs →</span>
-              <span className="text-brand-600 truncate">{JSON.stringify(buildInputs())}</span>
+              <span className="text-slate-300">payload →</span>
+              <span className="text-brand-600 truncate">{JSON.stringify({ acoId: selectedAcoId, ...buildInputs() })}</span>
             </div>
             <Button variant="secondary" size="sm" icon={<RotateCcw className="w-3.5 h-3.5" />} onClick={handleReset}>
               Run another analysis
@@ -292,6 +307,33 @@ export function PredictionsPage() {
       {/* Workflow stepper */}
       <Card className="mb-5">
         <WorkflowStepper steps={stepperSteps} />
+      </Card>
+
+      {/* ── ACO Selector ─────────────────────────────────────────────────── */}
+      <Card className="mb-5">
+        <div className="flex items-start gap-4">
+          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-brand-50 flex-shrink-0">
+            <Building2 className="w-5 h-5 text-brand-600" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-semibold text-slate-800 mb-0.5">Select ACO for Prediction</h3>
+            <p className="text-xs text-slate-400 mb-3">Choose the ACO you want to analyze. The prediction inputs and results will be associated with this ACO ID.</p>
+            <div className="max-w-sm">
+              <Select
+                label="ACO Identifier"
+                options={ACO_OPTIONS}
+                value={selectedAcoId}
+                onChange={e => setSelectedAcoId(e.target.value)}
+              />
+            </div>
+            {selectedAcoId && (
+              <p className="text-xs text-emerald-600 font-medium mt-2 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                Selected: {selectedAcoId}
+              </p>
+            )}
+          </div>
+        </div>
       </Card>
 
       {/* ── STEP 1: Metric inputs ─────────────────────────────────────────── */}
@@ -388,6 +430,7 @@ export function PredictionsPage() {
               <span className="text-brand-300">
                 {ANALYSIS_OPTIONS.find(a => a.type === selectedType)?.title}
               </span>
+              {' '}for <span className="text-brand-300 font-mono">{selectedAcoId}</span>
             </p>
             <p className="text-xs text-brand-400 mt-0.5">
               All 8/8 inputs are validated and analysis type is selected.
@@ -416,7 +459,7 @@ export function PredictionsPage() {
             <p className="text-xs font-semibold text-slate-400">View Prediction — Locked</p>
             <p className="text-xs text-slate-300 mt-0.5">
               {!allComplete
-                ? `Complete all inputs (${completedCount}/8 done) then select an analysis type.`
+                ? `Complete all inputs (${completedCount}/8 done)${!selectedAcoId ? ', select an ACO,' : ''} then select an analysis type.`
                 : 'Select an analysis type above to proceed.'}
             </p>
           </div>
