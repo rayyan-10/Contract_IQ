@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   AlertTriangle, TrendingUp, GitBranch, Play, RotateCcw, Building2,
 } from 'lucide-react';
@@ -10,9 +11,9 @@ import { MetricInput } from '@/components/prediction/MetricInput';
 import { AnalysisCard } from '@/components/prediction/AnalysisCard';
 import { InputProgress } from '@/components/prediction/InputProgress';
 import { WorkflowStepper } from '@/components/prediction/WorkflowStepper';
-import { ResultsDisplay } from '@/components/prediction/ResultsDisplay';
 import type { AnalysisType, PredictionInputs } from '@/types/prediction';
 import { predictRisk, predictPerformance, findTwinACOs } from '@/services/predictionService';
+import { usePredictionResult } from '@/context/PredictionContext';
 
 // ─── Mock ACO IDs (will be fetched from DB later) ─────────────────────────────
 // Format: A00001, A00002, ... Only the ID is stored in DB (no name).
@@ -206,19 +207,29 @@ export function PredictionsPage() {
   };
 
   // ── Run analysis ──────────────────────────────────────────────────────────
-  const [analysisResult, setAnalysisResult] = useState<import('@/types/prediction').PredictionResult | null>(null);
+  const { setResult: setPredictionResult, setInputId: setPredictionInputId } = usePredictionResult();
+  const navigate = useNavigate();
 
   const handleRunAnalysis = async () => {
     if (!selectedType || !allComplete) return;
     setRunning(true);
     const inputs = buildInputs();
     try {
-      let result: import('@/types/prediction').PredictionResult | null = null;
-      if (selectedType === 'risk')        result = await predictRisk(selectedAcoId, inputs);
-      if (selectedType === 'performance') result = await predictPerformance(selectedAcoId, inputs);
-      if (selectedType === 'twin')        result = await findTwinACOs(selectedAcoId, inputs);
-      setAnalysisResult(result);
-      setStep('result');
+      let response: import('@/services/predictionService').PredictionResponse | null = null;
+      if (selectedType === 'risk')        response = await predictRisk(selectedAcoId, inputs);
+      if (selectedType === 'performance') response = await predictPerformance(selectedAcoId, inputs);
+      if (selectedType === 'twin')        response = await findTwinACOs(selectedAcoId, inputs);
+
+      if (response) {
+        setPredictionResult(response.result);
+        setPredictionInputId(response.inputId);
+        // Navigate to the appropriate results page
+        const targetRoute =
+          selectedType === 'risk'        ? '/cms/risk'     :
+          selectedType === 'performance' ? '/cms/forecast' :
+                                           '/cms/twin-aco';
+        navigate(targetRoute);
+      }
     } finally {
       setRunning(false);
     }
@@ -231,7 +242,6 @@ export function PredictionsPage() {
     setErrors(EMPTY_ERRORS);
     setTouched(new Set());
     setSelectedType(null);
-    setAnalysisResult(null);
     setStep('inputs');
   };
 
@@ -249,48 +259,10 @@ export function PredictionsPage() {
     },
     {
       number: '03',
-      label: 'View Prediction',
-      status: (step === 'result' ? 'active' : 'locked') as 'active' | 'completed' | 'locked',
+      label: 'View Results',
+      status: 'locked' as 'active' | 'completed' | 'locked',
     },
   ];
-
-  // ─── Result screen ────────────────────────────────────────────────────────
-  if (step === 'result' && analysisResult) {
-    return (
-      <>
-        <PageHeader
-          title="Prediction & Scenario Analysis"
-          subtitle={'Results for ' + selectedAcoId + ' — ' + ANALYSIS_OPTIONS.find(a => a.type === selectedType)?.title}
-          breadcrumb={['CMS Analytics', 'Predictions', 'Results']}
-          actions={
-            <Button variant="secondary" size="sm" icon={<RotateCcw className="w-3.5 h-3.5" />} onClick={handleReset}>
-              New Analysis
-            </Button>
-          }
-        />
-
-        {/* Stepper showing completed */}
-        <Card className="mb-5">
-          <WorkflowStepper steps={[
-            { number: '01', label: 'Enter Metrics',   status: 'completed' },
-            { number: '02', label: 'Select Analysis', status: 'completed' },
-            { number: '03', label: 'View Prediction', status: 'active'    },
-          ]} />
-        </Card>
-
-        {/* Results */}
-        <ResultsDisplay result={analysisResult} />
-
-        {/* Payload debug (collapsed) */}
-        <details className="mt-5">
-          <summary className="text-xs text-slate-400 cursor-pointer hover:text-slate-600">Show raw payload (for debugging)</summary>
-          <pre className="mt-2 p-3 rounded-lg bg-slate-50 border border-surface-border text-xs text-slate-500 font-mono overflow-x-auto whitespace-pre-wrap">
-            {JSON.stringify({ acoId: selectedAcoId, ...buildInputs() }, null, 2)}
-          </pre>
-        </details>
-      </>
-    );
-  }
 
   // ─── Main workflow ────────────────────────────────────────────────────────
   return (

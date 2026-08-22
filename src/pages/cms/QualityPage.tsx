@@ -8,6 +8,7 @@ import { Card } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 import { Select } from '@/components/common/Select';
 import { predictQuality, type QualityPredictionResponse } from '@/services/qualityService';
+import { AgentAnalysisSection } from '@/components/prediction/AgentAnalysisSection';
 
 // ─── Options ──────────────────────────────────────────────────────────────────
 
@@ -253,6 +254,9 @@ export function QualityPage() {
               </div>
             </div>
           </Card>
+
+          {/* Agent Analysis */}
+          <AgentAnalysisSection inputId={result.inputId} variant="quality" />
 
           {/* Raw payload (debug) */}
           <details className="mt-2">

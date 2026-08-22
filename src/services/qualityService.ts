@@ -19,6 +19,7 @@ export interface QualityPredictionResponse {
   year: number;
   predictedQualityScore: number;
   qualityBand: 'HIGH' | 'MODERATE' | 'LOW';
+  inputId: string | null;
 }
 
 export async function predictQuality(req: QualityPredictionRequest): Promise<QualityPredictionResponse> {
@@ -44,6 +45,7 @@ export async function predictQuality(req: QualityPredictionRequest): Promise<Qua
       year: Number(data.year_t ?? req.year),
       predictedQualityScore: Number(data.predicted_quality_score ?? 0),
       qualityBand: String(data.quality_band ?? 'LOW') as 'HIGH' | 'MODERATE' | 'LOW',
+      inputId: data.input_id ? String(data.input_id) : null,
     };
   } catch (err) {
     console.warn('Quality API error, using mock:', err);
@@ -53,11 +55,10 @@ export async function predictQuality(req: QualityPredictionRequest): Promise<Qua
 
 // Mock fallback
 function mockQuality(req: QualityPredictionRequest): QualityPredictionResponse {
-  // Deterministic mock based on ACO ID number
   const num = parseInt(req.acoId.replace(/\D/g, ''), 10) || 1;
   const base = 65 + (num % 30);
   const yearBonus = (req.year - 2016) * 1.2;
   const score = Math.min(100, Math.round((base + yearBonus) * 100) / 100);
   const band = score >= 90 ? 'HIGH' : score >= 75 ? 'MODERATE' : 'LOW';
-  return { acoId: req.acoId, year: req.year, predictedQualityScore: score, qualityBand: band };
+  return { acoId: req.acoId, year: req.year, predictedQualityScore: score, qualityBand: band, inputId: null };
 }

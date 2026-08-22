@@ -8,6 +8,9 @@ import { CmsDashboard } from '@/pages/cms/CmsDashboard';
 import { PredictionsPage } from '@/pages/cms/PredictionsPage';
 import { CmsAnalytics } from '@/pages/cms/CmsAnalytics';
 import { QualityPage } from '@/pages/cms/QualityPage';
+import { RiskResultPage } from '@/pages/cms/RiskResultPage';
+import { ForecastResultPage } from '@/pages/cms/ForecastResultPage';
+import { TwinResultPage } from '@/pages/cms/TwinResultPage';
 import { AcoDashboard } from '@/pages/aco/AcoDashboard';
 import { AcoAnalytics } from '@/pages/aco/AcoAnalytics';
 import { PlaceholderPage } from '@/components/dashboard/PlaceholderPage';
@@ -32,9 +35,9 @@ export function AppRouter() {
               <Route path="/cms/analytics"       element={<CmsAnalytics />} />
               <Route path="/cms/predictions"     element={<PredictionsPage />} />
               <Route path="/cms/quality"         element={<QualityPage />} />
-              <Route path="/cms/risk"            element={<PlaceholderPage title="Risk Analysis"   subtitle="RAF score modeling and risk stratification"           breadcrumb={['CMS Analytics', 'Risk Analysis']} />} />
-              <Route path="/cms/forecast"        element={<PlaceholderPage title="Forecast"        subtitle="Budget impact and savings trajectory modeling"        breadcrumb={['CMS Analytics', 'Forecast']} />} />
-              <Route path="/cms/twin-aco"        element={<PlaceholderPage title="Twin ACO"        subtitle="Peer cohort comparison and benchmark analysis"        breadcrumb={['CMS Analytics', 'Twin ACO']} />} />
+              <Route path="/cms/risk"            element={<RiskResultPage />} />
+              <Route path="/cms/forecast"        element={<ForecastResultPage />} />
+              <Route path="/cms/twin-aco"        element={<TwinResultPage />} />
               <Route path="/cms/reports"         element={<PlaceholderPage title="Reports"         subtitle="Regulatory and performance reporting suite"           breadcrumb={['CMS Analytics', 'Reports']} />} />
             </Route>
 
