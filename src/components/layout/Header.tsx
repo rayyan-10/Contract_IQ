@@ -50,7 +50,7 @@ export function Header() {
   const handleLogout = () => { logout(); navigate('/login', { replace: true }); };
 
   return (
-    <header className="h-16 flex items-center justify-between px-6 bg-white border-b border-surface-border flex-shrink-0 z-30">
+    <header className="h-16 flex items-center justify-between px-6 bg-white border-b border-cream-300 flex-shrink-0 z-30">
       {/* Left */}
       <div className="flex items-center gap-3">
         <button
@@ -75,8 +75,8 @@ export function Header() {
           <div className={[
             'hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wide',
             isAco
-              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-              : 'bg-indigo-50  text-indigo-700  border-indigo-200',
+              ? 'bg-amber-50 text-amber-700 border-amber-200'
+              : 'bg-amber-50 text-amber-700 border-amber-200',
           ].join(' ')}>
             {isAco
               ? <Stethoscope className="w-3 h-3" />
@@ -99,8 +99,8 @@ export function Header() {
           </button>
 
           {notifOpen && (
-            <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-card-lg border border-surface-border z-50">
-              <div className="px-4 py-3 border-b border-surface-border flex items-center justify-between">
+            <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl shadow-card-lg border border-cream-300 z-50">
+              <div className="px-4 py-3 border-b border-cream-300 flex items-center justify-between">
                 <span className="text-sm font-semibold text-slate-700">Notifications</span>
                 {unreadCount > 0 && <Badge variant="danger">{unreadCount} new</Badge>}
               </div>
@@ -119,7 +119,7 @@ export function Header() {
                         <p className="text-xs font-semibold text-slate-700 truncate">{n.title}</p>
                         <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{n.message}</p>
                       </div>
-                      {!n.read && <Check className="w-3.5 h-3.5 text-indigo-500 flex-shrink-0 mt-0.5" />}
+                      {!n.read && <Check className="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5" />}
                     </div>
                   </li>
                 ))}
@@ -137,7 +137,7 @@ export function Header() {
           >
             <div className={[
               'w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold',
-              isAco ? 'bg-emerald-100 text-emerald-700' : 'bg-indigo-100 text-indigo-700',
+              isAco ? 'bg-amber-100 text-maroon-900' : 'bg-amber-100 text-maroon-900',
             ].join(' ')}>
               {user?.name?.charAt(0).toUpperCase() ?? 'U'}
             </div>
@@ -148,8 +148,8 @@ export function Header() {
           </button>
 
           {userOpen && (
-            <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-xl shadow-card-lg border border-surface-border z-50">
-              <div className="px-4 py-3 border-b border-surface-border">
+            <div className="absolute right-0 top-full mt-2 w-52 bg-white rounded-xl shadow-card-lg border border-cream-300 z-50">
+              <div className="px-4 py-3 border-b border-cream-300">
                 <p className="text-xs font-semibold text-slate-800 truncate">{user?.name}</p>
                 <p className="text-xs text-slate-400 truncate">{user?.email}</p>
                 {user?.acoId && <p className="text-xs text-slate-400 mt-0.5">ID: {user.acoId}</p>}
@@ -172,4 +172,5 @@ export function Header() {
     </header>
   );
 }
+
 

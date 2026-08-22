@@ -9,10 +9,10 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary:   'bg-brand-600 text-white hover:bg-brand-700 focus:ring-brand-500',
-  secondary: 'bg-white text-slate-700 border border-surface-border hover:bg-slate-50 focus:ring-slate-300',
-  ghost:     'bg-transparent text-slate-600 hover:bg-slate-100 focus:ring-slate-300',
-  danger:    'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+  primary:   'bg-maroon-900 text-white hover:bg-maroon-800 focus:ring-maroon-900/30 shadow-md shadow-maroon-900/10',
+  secondary: 'bg-white text-maroon-900 border border-cream-300 hover:bg-cream-100 focus:ring-maroon-900/10',
+  ghost:     'bg-transparent text-maroon-800 hover:bg-cream-200 focus:ring-maroon-900/10',
+  danger:    'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500/30',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -36,19 +36,16 @@ export function Button({
       {...props}
       disabled={disabled || loading}
       className={[
-        'inline-flex items-center gap-2 font-medium rounded-lg transition-colors duration-150',
+        'inline-flex items-center gap-2 font-semibold rounded-xl transition-all duration-150',
         'focus:outline-none focus:ring-2 focus:ring-offset-1',
         variantClasses[variant],
         sizeClasses[size],
-        (disabled || loading) ? 'opacity-50 cursor-not-allowed' : '',
+        (disabled || loading) ? 'opacity-50 cursor-not-allowed' : 'hover:-translate-y-0.5 active:translate-y-0',
         className,
       ].join(' ')}
     >
       {loading && (
-        <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-        </svg>
+        <div className="w-4 h-4 rounded-full border-2 border-current/30 border-t-current animate-spin" />
       )}
       {!loading && icon && <span className="flex-shrink-0">{icon}</span>}
       {children}

@@ -292,8 +292,8 @@ export function PredictionsPage() {
             <Building2 className="w-5 h-5 text-brand-600" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-semibold text-slate-800 mb-0.5">Select ACO for Prediction</h3>
-            <p className="text-xs text-slate-400 mb-3">Choose the ACO you want to analyze. The prediction inputs and results will be associated with this ACO ID.</p>
+            <h3 className="text-sm font-semibold text-maroon-900 mb-0.5">Select ACO for Prediction</h3>
+            <p className="text-xs text-maroon-800/40 mb-3">Choose the ACO you want to analyze. The prediction inputs and results will be associated with this ACO ID.</p>
             <div className="max-w-sm">
               <Select
                 label="ACO Identifier"
@@ -316,11 +316,11 @@ export function PredictionsPage() {
       <div className="mb-5">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h2 className="text-sm font-semibold text-slate-800">
-              <span className="text-brand-500 font-bold mr-2">01</span>
+            <h2 className="text-sm font-semibold text-maroon-900">
+              <span className="text-amber-500 font-bold mr-2">01</span>
               ACO Performance Indicators
             </h2>
-            <p className="text-xs text-slate-400 mt-0.5">Enter all 8 model inputs to unlock analysis options</p>
+            <p className="text-xs text-maroon-800/40 mt-0.5">Enter all 8 model inputs to unlock analysis options</p>
           </div>
         </div>
 
@@ -358,7 +358,7 @@ export function PredictionsPage() {
 
           {/* Validate all CTA — only shows if not all complete yet */}
           {!allComplete && completedCount > 0 && (
-            <div className="mt-6 pt-5 border-t border-surface-border">
+            <div className="mt-6 pt-5 border-t border-cream-300">
               <Button variant="ghost" size="sm" onClick={validateAll}>
                 Check all fields
               </Button>
@@ -370,11 +370,11 @@ export function PredictionsPage() {
       {/* ── STEP 2: Analysis selection ────────────────────────────────────── */}
       <div className="mb-5">
         <div className="mb-3">
-          <h2 className="text-sm font-semibold text-slate-800">
-            <span className={`font-bold mr-2 ${allComplete ? 'text-brand-500' : 'text-slate-300'}`}>02</span>
+          <h2 className="text-sm font-semibold text-maroon-900">
+            <span className={`font-bold mr-2 ${allComplete ? 'text-amber-500' : 'text-slate-300'}`}>02</span>
             Select Analysis Type
           </h2>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-maroon-800/40 mt-0.5">
             {allComplete
               ? 'Choose the type of prediction you want to run'
               : 'Complete all 8 inputs above to unlock analysis options'}
@@ -399,16 +399,16 @@ export function PredictionsPage() {
 
       {/* ── STEP 3: Run Analysis CTA ──────────────────────────────────────── */}
       {allComplete && selectedType && (
-        <div className="flex items-center justify-between p-5 rounded-xl bg-brand-950 border border-brand-800">
+        <div className="flex items-center justify-between p-5 rounded-xl bg-maroon-900 border border-maroon-800">
           <div>
             <p className="text-sm font-semibold text-white">
               Ready to run{' '}
-              <span className="text-brand-300">
+              <span className="text-amber-400">
                 {ANALYSIS_OPTIONS.find(a => a.type === selectedType)?.title}
               </span>
-              {' '}for <span className="text-brand-300 font-mono">{selectedAcoId}</span>
+              {' '}for <span className="text-amber-400 font-mono">{selectedAcoId}</span>
             </p>
-            <p className="text-xs text-brand-400 mt-0.5">
+            <p className="text-xs text-amber-400 mt-0.5">
               All 8/8 inputs are validated and analysis type is selected.
             </p>
           </div>
@@ -418,7 +418,7 @@ export function PredictionsPage() {
             loading={running}
             icon={!running ? <Play className="w-4 h-4" /> : undefined}
             onClick={handleRunAnalysis}
-            className="bg-brand-500 hover:bg-brand-400 flex-shrink-0"
+            className="bg-amber-500 hover:bg-amber-400 flex-shrink-0"
           >
             {running ? 'Analyzing…' : 'Run Analysis'}
           </Button>
@@ -427,12 +427,12 @@ export function PredictionsPage() {
 
       {/* ── Step 03 locked state ──────────────────────────────────────────── */}
       {(!allComplete || !selectedType) && (
-        <div className="flex items-center gap-3 p-4 rounded-xl bg-slate-50 border border-surface-border">
+        <div className="flex items-center gap-3 p-4 rounded-xl bg-cream-100 border border-cream-300">
           <span className="flex items-center justify-center w-7 h-7 rounded-full bg-slate-200 flex-shrink-0">
-            <span className="text-xs font-bold text-slate-400">03</span>
+            <span className="text-xs font-bold text-maroon-800/40">03</span>
           </span>
           <div>
-            <p className="text-xs font-semibold text-slate-400">View Prediction — Locked</p>
+            <p className="text-xs font-semibold text-maroon-800/40">View Prediction — Locked</p>
             <p className="text-xs text-slate-300 mt-0.5">
               {!allComplete
                 ? `Complete all inputs (${completedCount}/8 done)${!selectedAcoId ? ', select an ACO,' : ''} then select an analysis type.`
@@ -444,3 +444,4 @@ export function PredictionsPage() {
     </>
   );
 }
+

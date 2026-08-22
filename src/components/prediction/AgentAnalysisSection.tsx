@@ -20,8 +20,8 @@ const ARRAY_STYLES: Record<string, { color: string; bg: string; border: string; 
   strengths:          { color: 'text-emerald-700', bg: 'bg-emerald-50',  border: 'border-l-emerald-500', icon: <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />, label: 'Strengths' },
   weaknesses:         { color: 'text-red-700',     bg: 'bg-red-50',      border: 'border-l-red-500',     icon: <XCircle className="w-3.5 h-3.5 text-red-500" />,          label: 'Weaknesses' },
   improvement_areas:  { color: 'text-amber-700',   bg: 'bg-amber-50',    border: 'border-l-amber-500',   icon: <TrendingUp className="w-3.5 h-3.5 text-amber-600" />,    label: 'Improvement Areas' },
-  recommended_actions:{ color: 'text-violet-700',  bg: 'bg-violet-50',   border: 'border-l-violet-500',  icon: <Lightbulb className="w-3.5 h-3.5 text-violet-600" />,    label: 'Recommended Actions' },
-  recommendations:    { color: 'text-violet-700',  bg: 'bg-violet-50',   border: 'border-l-violet-500',  icon: <Lightbulb className="w-3.5 h-3.5 text-violet-600" />,    label: 'Recommendations' },
+  recommended_actions:{ color: 'text-maroon-900',  bg: 'bg-cream-200',   border: 'border-l-violet-500',  icon: <Lightbulb className="w-3.5 h-3.5 text-maroon-900" />,    label: 'Recommended Actions' },
+  recommendations:    { color: 'text-maroon-900',  bg: 'bg-cream-200',   border: 'border-l-violet-500',  icon: <Lightbulb className="w-3.5 h-3.5 text-maroon-900" />,    label: 'Recommendations' },
   insights:           { color: 'text-sky-700',     bg: 'bg-sky-50',      border: 'border-l-sky-500',     icon: <Target className="w-3.5 h-3.5 text-sky-600" />,           label: 'Key Insights' },
   key_findings:       { color: 'text-indigo-700',  bg: 'bg-indigo-50',   border: 'border-l-indigo-500',  icon: <Target className="w-3.5 h-3.5 text-indigo-600" />,        label: 'Key Findings' },
   risk_factors:       { color: 'text-red-700',     bg: 'bg-red-50',      border: 'border-l-red-500',     icon: <AlertCircle className="w-3.5 h-3.5 text-red-500" />,      label: 'Risk Factors' },
@@ -175,7 +175,23 @@ export function AgentAnalysisSection({ inputId, variant = 'default' }: AgentAnal
   const [error, setError]       = useState('');
   const [response, setResponse] = useState<AgentAnalysisResponse | null>(null);
 
-  if (!inputId) return null;
+  if (!inputId) {
+    return (
+      <div className="mt-8">
+        <div className="flex items-center gap-3 mb-5">
+          <div className="flex-1 h-px bg-cream-300" />
+          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-cream-200 border border-cream-300">
+            <Bot className="w-3.5 h-3.5 text-maroon-900" />
+            <span className="text-xs font-bold text-maroon-900 uppercase tracking-wide">AI Agent Analysis</span>
+          </div>
+          <div className="flex-1 h-px bg-cream-300" />
+        </div>
+        <div className="text-center py-6">
+          <p className="text-xs text-maroon-800/50">Agent analysis requires a backend connection. Run the prediction with your FastAPI server active to enable this feature.</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleAnalyze = async () => {
     setLoading(true);
@@ -197,9 +213,9 @@ export function AgentAnalysisSection({ inputId, variant = 'default' }: AgentAnal
       {/* Divider */}
       <div className="flex items-center gap-3 mb-6">
         <div className="flex-1 h-px bg-surface-border" />
-        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-50 border border-violet-200">
-          <Bot className="w-3.5 h-3.5 text-violet-600" />
-          <span className="text-xs font-bold text-violet-700 uppercase tracking-wide">AI Agent Analysis</span>
+        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-cream-200 border border-cream-300">
+          <Bot className="w-3.5 h-3.5 text-maroon-900" />
+          <span className="text-xs font-bold text-maroon-900 uppercase tracking-wide">AI Agent Analysis</span>
         </div>
         <div className="flex-1 h-px bg-surface-border" />
       </div>
@@ -207,8 +223,8 @@ export function AgentAnalysisSection({ inputId, variant = 'default' }: AgentAnal
       {/* Button state — not yet analyzed */}
       {!response && (
         <div className="flex flex-col items-center gap-4 py-8">
-          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-100 to-indigo-100 border border-violet-200 shadow-sm">
-            <Bot className="w-7 h-7 text-violet-600" />
+          <div className="flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-50 to-cream-200 border border-cream-300 shadow-sm">
+            <Bot className="w-7 h-7 text-maroon-900" />
           </div>
           <div className="text-center max-w-md">
             <p className="text-sm font-semibold text-slate-800">Get Deeper AI Insights</p>
@@ -223,7 +239,7 @@ export function AgentAnalysisSection({ inputId, variant = 'default' }: AgentAnal
             loading={loading}
             icon={!loading ? <Sparkles className="w-4 h-4" /> : undefined}
             onClick={handleAnalyze}
-            className="bg-violet-600 hover:bg-violet-700 focus:ring-violet-500 shadow-lg shadow-violet-200 mt-1"
+            className="bg-maroon-900 hover:bg-maroon-800 focus:ring-maroon-900/30 shadow-lg shadow-maroon-900/10 mt-1"
           >
             {loading ? 'Agent is analyzing…' : 'Run Agent Analysis'}
           </Button>
@@ -238,18 +254,18 @@ export function AgentAnalysisSection({ inputId, variant = 'default' }: AgentAnal
 
       {/* Agent response */}
       {response && (
-        <div className="rounded-2xl border border-violet-200 bg-gradient-to-b from-violet-50/50 to-white p-6">
+        <div className="rounded-2xl border border-cream-300 bg-white border-cream-300 p-6">
           {/* Header */}
-          <div className="flex items-center gap-3 mb-5 pb-4 border-b border-violet-100">
-            <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-violet-100">
-              <Sparkles className="w-4.5 h-4.5 text-violet-600" />
+          <div className="flex items-center gap-3 mb-5 pb-4 border-b border-cream-300">
+            <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-amber-50">
+              <Sparkles className="w-4.5 h-4.5 text-maroon-900" />
             </div>
             <div>
               <p className="text-sm font-bold text-slate-800">Agent Analysis Complete</p>
               <p className="text-xs text-slate-400">Powered by ContractIQ AI Agents</p>
             </div>
             {response.analysis.aco_id && (
-              <span className="ml-auto text-xs font-mono font-semibold text-violet-600 bg-violet-100 px-2.5 py-1 rounded-lg border border-violet-200">
+              <span className="ml-auto text-xs font-mono font-semibold text-maroon-900 bg-amber-50 px-2.5 py-1 rounded-lg border border-cream-300">
                 {String(response.analysis.aco_id)}
               </span>
             )}
@@ -259,7 +275,7 @@ export function AgentAnalysisSection({ inputId, variant = 'default' }: AgentAnal
           <AgentResultDisplay data={response.analysis as Record<string, unknown>} />
 
           {/* Collapsed raw JSON */}
-          <details className="mt-5 pt-4 border-t border-violet-100">
+          <details className="mt-5 pt-4 border-t border-cream-300">
             <summary className="text-xs text-slate-400 cursor-pointer hover:text-slate-600 flex items-center gap-1">
               <span>View raw JSON response</span>
             </summary>
@@ -272,3 +288,4 @@ export function AgentAnalysisSection({ inputId, variant = 'default' }: AgentAnal
     </div>
   );
 }
+

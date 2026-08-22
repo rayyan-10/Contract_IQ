@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
-import { LoginPage } from '@/pages/auth/LoginPage';
-import { SignupPage } from '@/pages/auth/SignupPage';
+import { AuthPage } from '@/pages/auth/AuthPage';
 import { LandingPage } from '@/pages/LandingPage';
 import { CmsDashboard } from '@/pages/cms/CmsDashboard';
 import { PredictionsPage } from '@/pages/cms/PredictionsPage';
@@ -22,8 +21,8 @@ export function AppRouter() {
       <Routes>
         {/* Public routes */}
         <Route path="/"       element={<LandingPage />} />
-        <Route path="/login"  element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login"  element={<AuthPage />} />
+        <Route path="/signup" element={<AuthPage />} />
 
         {/* Protected app shell */}
         <Route element={<ProtectedRoute />}>

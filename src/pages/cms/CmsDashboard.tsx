@@ -12,8 +12,8 @@ import {
 } from 'recharts';
 import type { BadgeVariant } from '@/types';
 
-const TICK = { fontSize: 11, fill: '#94a3b8' };
-const GRID = { strokeDasharray: '3 3', stroke: '#f1f5f9' };
+const TICK = { fontSize: 11, fill: '#8b7355' };
+const GRID = { strokeDasharray: '3 3', stroke: '#ede8d0' };
 const TIP  = { contentStyle: { fontSize: 12, borderRadius: 8, border: '1px solid #e2e8f0', boxShadow: 'none' } };
 
 const savingsData = [
@@ -66,7 +66,7 @@ export function CmsDashboard() {
         subtitle="FY2026 · All Contracts Portfolio Overview"
         breadcrumb={['CMS Analytics', 'Dashboard']}
         actions={
-          <Link to="/cms/analytics" className="flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1.5 rounded-lg transition-colors">
+          <Link to="/cms/analytics" className="flex items-center gap-1.5 text-xs font-semibold text-maroon-900 hover:text-brand-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-lg transition-colors">
             Full Analytics <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         }
@@ -87,8 +87,8 @@ export function CmsDashboard() {
             <AreaChart data={savingsData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
               <defs>
                 <linearGradient id="actualGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%"  stopColor="#6366f1" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#6366f1" stopOpacity={0}    />
+                  <stop offset="5%"  stopColor="#3d1515" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#3d1515" stopOpacity={0}    />
                 </linearGradient>
               </defs>
               <CartesianGrid {...GRID} />
@@ -96,8 +96,8 @@ export function CmsDashboard() {
               <YAxis tick={TICK} tickLine={false} axisLine={false} domain={['auto', 'auto']} />
               <Tooltip {...TIP} />
               <Legend wrapperStyle={{ fontSize: 12 }} />
-              <Area type="monotone" dataKey="benchmark" stroke="#94a3b8" strokeWidth={1.5} strokeDasharray="4 3" fill="none"            name="Benchmark" />
-              <Area type="monotone" dataKey="actual"    stroke="#6366f1" strokeWidth={2}   fill="url(#actualGrad)"                       name="Actual"    />
+              <Area type="monotone" dataKey="benchmark" stroke="#8b7355" strokeWidth={1.5} strokeDasharray="4 3" fill="none"            name="Benchmark" />
+              <Area type="monotone" dataKey="actual"    stroke="#3d1515" strokeWidth={2}   fill="url(#actualGrad)"                       name="Actual"    />
             </AreaChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -107,11 +107,11 @@ export function CmsDashboard() {
             <BarChart data={qualityData} layout="vertical" margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
               <CartesianGrid {...GRID} horizontal={false} />
               <XAxis type="number" domain={[60, 100]} tick={TICK} tickLine={false} axisLine={false} />
-              <YAxis dataKey="measure" type="category" tick={{ fontSize: 10, fill: '#94a3b8' }} tickLine={false} axisLine={false} width={78} />
+              <YAxis dataKey="measure" type="category" tick={{ fontSize: 10, fill: '#8b7355' }} tickLine={false} axisLine={false} width={78} />
               <Tooltip {...TIP} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               <Bar dataKey="benchmark" fill="#e2e8f0" radius={[0, 3, 3, 0]} name="Benchmark" barSize={7} />
-              <Bar dataKey="score"     fill="#6366f1" radius={[0, 3, 3, 0]} name="Score"     barSize={7} />
+              <Bar dataKey="score"     fill="#3d1515" radius={[0, 3, 3, 0]} name="Score"     barSize={7} />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -149,12 +149,12 @@ export function CmsDashboard() {
 
       {/* Contracts table */}
       <Card padding={false}>
-        <div className="px-5 py-4 border-b border-surface-border flex items-center justify-between">
+        <div className="px-5 py-4 border-b border-cream-300 flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold text-slate-800">Active Contracts</h3>
-            <p className="text-xs text-slate-400 mt-0.5">Performance snapshot — current performance year</p>
+            <h3 className="text-sm font-semibold text-maroon-900">Active Contracts</h3>
+            <p className="text-xs text-maroon-800/40 mt-0.5">Performance snapshot — current performance year</p>
           </div>
-          <Link to="/cms/analytics" className="text-xs text-brand-600 hover:underline font-medium flex items-center gap-1">
+          <Link to="/cms/analytics" className="text-xs text-maroon-900 hover:underline font-medium flex items-center gap-1">
             View all <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
@@ -172,10 +172,10 @@ export function CmsDashboard() {
           <tbody>
             {contracts.map(c => (
               <tr key={c.name}>
-                <td className="font-medium text-slate-800">{c.name}</td>
-                <td className="text-slate-500 text-xs">{c.track}</td>
-                <td className="text-slate-500 text-xs">{c.region}</td>
-                <td className="text-center font-semibold text-slate-700">{c.quality}</td>
+                <td className="font-medium text-maroon-900">{c.name}</td>
+                <td className="text-maroon-800/60 text-xs">{c.track}</td>
+                <td className="text-maroon-800/60 text-xs">{c.region}</td>
+                <td className="text-center font-semibold text-maroon-800">{c.quality}</td>
                 <td className={`text-right font-bold text-sm ${parseFloat(c.savings) >= 3 ? 'text-emerald-600' : parseFloat(c.savings) >= 0 ? 'text-amber-600' : 'text-red-500'}`}>
                   {c.savings}
                 </td>
@@ -188,3 +188,4 @@ export function CmsDashboard() {
     </>
   );
 }
+

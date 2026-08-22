@@ -19,72 +19,64 @@ export function Sidebar({ mobile = false }: SidebarProps) {
   const isActive = (path: string) =>
     location.pathname === path || location.pathname.startsWith(path + '/');
 
-  // Accent colours per role
-  const accent = isAco
-    ? { dot: 'bg-emerald-400', label: 'text-emerald-400', badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/25' }
-    : { dot: 'bg-indigo-400',  label: 'text-indigo-400',  badge: 'bg-indigo-500/15  text-indigo-300  border-indigo-500/25'  };
-
   return (
     <aside className={[
-      'flex flex-col h-full bg-[#0d1220] border-r border-white/6 transition-all duration-200',
+      'flex flex-col h-full bg-maroon-900 transition-all duration-200',
       collapsed ? 'w-16' : 'w-60',
     ].join(' ')}>
 
-      {/* ── Logo header ─────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between px-4 h-16 border-b border-white/6 flex-shrink-0">
+      {/* Logo */}
+      <div className="flex items-center justify-between px-4 h-16 border-b border-white/10 flex-shrink-0">
         {!collapsed && (
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex-shrink-0 shadow-lg shadow-indigo-900/40">
-              <Activity className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400 flex-shrink-0 shadow-md">
+              <Activity className="w-4 h-4 text-maroon-900" strokeWidth={2.5} />
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-bold text-white tracking-tight leading-none">ContractIQ</p>
-              <p className="text-[9px] text-slate-500 mt-0.5 truncate">Analytics Platform</p>
+              <p className="text-sm font-bold text-cream-100 tracking-tight leading-none">ContractIQ</p>
+              <p className="text-[9px] text-cream-400 mt-0.5 truncate">Analytics Platform</p>
             </div>
           </div>
         )}
         {collapsed && (
-          <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 mx-auto shadow-lg shadow-indigo-900/40">
-            <Activity className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400 mx-auto shadow-md">
+            <Activity className="w-4 h-4 text-maroon-900" strokeWidth={2.5} />
           </div>
         )}
         {!collapsed && (
           mobile ? (
-            <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg text-slate-500 hover:bg-white/10 hover:text-white transition-colors" aria-label="Close">
+            <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg text-cream-400 hover:bg-white/10 hover:text-cream-100 transition-colors" aria-label="Close">
               <X className="w-4 h-4" />
             </button>
           ) : (
-            <button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="p-1.5 rounded-lg text-slate-500 hover:bg-white/10 hover:text-white transition-colors flex-shrink-0" aria-label="Collapse">
+            <button onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="p-1.5 rounded-lg text-cream-400 hover:bg-white/10 hover:text-cream-100 transition-colors flex-shrink-0" aria-label="Collapse">
               <ChevronLeft className="w-4 h-4" />
             </button>
           )
         )}
         {collapsed && !mobile && (
-          <button onClick={() => setSidebarCollapsed(false)} className="absolute top-4 right-2 p-1 rounded-lg text-slate-500 hover:bg-white/10 hover:text-white transition-colors" aria-label="Expand">
+          <button onClick={() => setSidebarCollapsed(false)} className="absolute top-4 right-1 p-1 rounded-lg text-cream-400 hover:bg-white/10 hover:text-cream-100 transition-colors" aria-label="Expand">
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         )}
       </div>
 
-      {/* ── Role badge ──────────────────────────────────────────────────── */}
+      {/* Role badge */}
       {!collapsed && (
-        <div className="px-4 py-3 border-b border-white/6">
-          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wide ${accent.badge}`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${accent.dot}`} />
+        <div className="px-4 py-3 border-b border-white/10">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-amber-400/30 bg-amber-400/10 text-[10px] font-bold uppercase tracking-wide text-amber-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
             {user?.role ?? 'CMS'} Workspace
           </span>
-          {user?.acoName && (
-            <p className="text-[10px] text-slate-500 mt-1 truncate">{user.acoName}</p>
-          )}
         </div>
       )}
 
-      {/* ── Nav ─────────────────────────────────────────────────────────── */}
+      {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-4 px-3 flex flex-col gap-1" aria-label="Main navigation">
         {navGroups.map(group => (
           <div key={group.group} className="mb-4">
             {!collapsed && (
-              <p className={`text-[9px] font-bold uppercase tracking-[0.18em] px-3 mb-2 ${accent.label}`}>
+              <p className="text-[9px] font-bold uppercase tracking-[0.18em] px-3 mb-2 text-amber-400/70">
                 {group.group}
               </p>
             )}
@@ -106,10 +98,6 @@ export function Sidebar({ mobile = false }: SidebarProps) {
                     >
                       <Icon className="sidebar-item-icon" aria-hidden="true" />
                       {!collapsed && <span>{item.label}</span>}
-                      {/* Active left bar */}
-                      {active && !collapsed && (
-                        <span className={`ml-auto w-1 h-4 rounded-full ${isAco ? 'bg-emerald-400' : 'bg-indigo-400'}`} />
-                      )}
                     </NavLink>
                   </li>
                 );
@@ -119,24 +107,24 @@ export function Sidebar({ mobile = false }: SidebarProps) {
         ))}
       </nav>
 
-      {/* ── Footer ──────────────────────────────────────────────────────── */}
-      <div className="px-4 py-4 border-t border-white/6 flex-shrink-0">
+      {/* Footer */}
+      <div className="px-4 py-4 border-t border-white/10 flex-shrink-0">
         {!collapsed ? (
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-              <span className="text-[10px] font-bold text-slate-400">
+            <div className="w-7 h-7 rounded-full bg-amber-400/20 flex items-center justify-center flex-shrink-0">
+              <span className="text-[10px] font-bold text-amber-400">
                 {user?.name?.charAt(0).toUpperCase() ?? 'U'}
               </span>
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-medium text-slate-300 truncate">{user?.name ?? 'User'}</p>
-              <p className="text-[9px] text-slate-600 truncate">{user?.email ?? ''}</p>
+              <p className="text-xs font-medium text-cream-200 truncate">{user?.name ?? 'User'}</p>
+              <p className="text-[9px] text-cream-400/60 truncate">{user?.email ?? ''}</p>
             </div>
           </div>
         ) : (
           <div className="flex justify-center">
-            <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">
-              <span className="text-[10px] font-bold text-slate-400">
+            <div className="w-7 h-7 rounded-full bg-amber-400/20 flex items-center justify-center">
+              <span className="text-[10px] font-bold text-amber-400">
                 {user?.name?.charAt(0).toUpperCase() ?? 'U'}
               </span>
             </div>
@@ -146,4 +134,3 @@ export function Sidebar({ mobile = false }: SidebarProps) {
     </aside>
   );
 }
-

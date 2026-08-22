@@ -3,16 +3,20 @@ import React from 'react';
 interface LoadingStateProps {
   message?: string;
   className?: string;
+  size?: 'sm' | 'md' | 'lg';
 }
 
-export function LoadingState({ message = 'Loading data…', className = '' }: LoadingStateProps) {
+export function LoadingState({ message = 'Loading…', className = '', size = 'md' }: LoadingStateProps) {
+  const sizeMap = { sm: 'w-5 h-5', md: 'w-8 h-8', lg: 'w-12 h-12' };
+  const textMap = { sm: 'text-xs', md: 'text-sm', lg: 'text-base' };
+
   return (
-    <div className={`flex flex-col items-center justify-center gap-3 py-16 text-slate-400 ${className}`}>
-      <svg className="animate-spin w-8 h-8 text-brand-500" fill="none" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" />
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-      </svg>
-      <p className="text-sm font-medium">{message}</p>
+    <div className={'flex flex-col items-center justify-center gap-3 py-12 ' + className}>
+      <div className="relative">
+        <div className={sizeMap[size] + ' rounded-full border-2 border-slate-100'} />
+        <div className={sizeMap[size] + ' rounded-full border-2 border-transparent border-t-indigo-500 animate-spin absolute inset-0'} />
+      </div>
+      <p className={textMap[size] + ' font-medium text-slate-400'}>{message}</p>
     </div>
   );
 }

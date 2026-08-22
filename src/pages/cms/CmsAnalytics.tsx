@@ -22,15 +22,15 @@ import type { BadgeVariant } from '@/types';
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const C = {
-  brand:   '#6366f1', emerald: '#10b981', amber: '#f59e0b',
-  red:     '#ef4444', slate:   '#94a3b8', sky:   '#0ea5e9',
+  brand:   '#3d1515', emerald: '#10b981', amber: '#f59e0b',
+  red:     '#ef4444', slate:   '#8b7355', sky:   '#0ea5e9',
   violet:  '#8b5cf6', rose:    '#f43f5e',
 };
 
 const ACO_COLORS = [C.brand, C.emerald, C.amber, C.sky, C.violet, C.rose, '#14b8a6', '#f97316'];
 
-const TICK = { fontSize: 11, fill: '#94a3b8' };
-const GRID = { strokeDasharray: '3 3', stroke: '#f1f5f9' };
+const TICK = { fontSize: 11, fill: '#8b7355' };
+const GRID = { strokeDasharray: '3 3', stroke: '#ede8d0' };
 const TIP  = { contentStyle: { fontSize: 12, borderRadius: 8, border: '1px solid #e2e8f0', boxShadow: 'none' } };
 
 const STATUS_VARIANT: Record<AcoStatus, BadgeVariant> = {
@@ -54,8 +54,8 @@ function AcoSelectChip({ aco, selected, onToggle }: {
       className={[
         'flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-medium transition-all',
         selected
-          ? 'bg-brand-600 text-white border-brand-600 shadow-sm'
-          : 'bg-white text-slate-600 border-surface-border hover:border-brand-300',
+          ? 'bg-maroon-900 text-white border-brand-600 shadow-sm'
+          : 'bg-white text-maroon-800/70 border-cream-300 hover:border-brand-300',
       ].join(' ')}
     >
       <span className={[
@@ -151,7 +151,7 @@ function PortfolioTab({ acos }: { acos: AcoRecord[] }) {
           <ResponsiveContainer width="100%" height="100%">
             <ScatterChart margin={{ top: 10, right: 20, left: -10, bottom: 0 }}>
               <CartesianGrid {...GRID} />
-              <XAxis dataKey="x" type="number" name="Savings %" tick={TICK} tickLine={false} axisLine={false} tickFormatter={v => v + '%'} label={{ value: 'Savings %', position: 'insideBottom', offset: -2, fontSize: 10, fill: '#94a3b8' }} />
+              <XAxis dataKey="x" type="number" name="Savings %" tick={TICK} tickLine={false} axisLine={false} tickFormatter={v => v + '%'} label={{ value: 'Savings %', position: 'insideBottom', offset: -2, fontSize: 10, fill: '#8b7355' }} />
               <YAxis dataKey="y" type="number" name="Quality" tick={TICK} tickLine={false} axisLine={false} domain={[60, 100]} />
               <ZAxis dataKey="z" range={[40, 400]} />
               <Tooltip
@@ -201,8 +201,8 @@ function PortfolioTab({ acos }: { acos: AcoRecord[] }) {
               const pct   = Math.round((count / acos.length) * 100);
               return (
                 <div key={s} className="flex-1 flex flex-col items-center gap-2">
-                  <div className="text-2xl font-bold text-slate-800">{count}</div>
-                  <div className="w-full bg-slate-100 rounded-full h-2">
+                  <div className="text-2xl font-bold text-maroon-900">{count}</div>
+                  <div className="w-full bg-cream-200 rounded-full h-2">
                     <div
                       className="h-2 rounded-full transition-all"
                       style={{
@@ -224,10 +224,10 @@ function PortfolioTab({ acos }: { acos: AcoRecord[] }) {
 
       {/* Sortable ACO table */}
       <Card padding={false}>
-        <div className="px-5 py-4 border-b border-surface-border flex items-center justify-between">
+        <div className="px-5 py-4 border-b border-cream-300 flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold text-slate-800">ACO Portfolio — All Records</h3>
-            <p className="text-xs text-slate-400 mt-0.5">{acos.length} ACOs · Click column headers to sort</p>
+            <h3 className="text-sm font-semibold text-maroon-900">ACO Portfolio — All Records</h3>
+            <p className="text-xs text-maroon-800/40 mt-0.5">{acos.length} ACOs · Click column headers to sort</p>
           </div>
         </div>
         <div className="overflow-x-auto">
@@ -236,16 +236,16 @@ function PortfolioTab({ acos }: { acos: AcoRecord[] }) {
               <tr>
                 <th>ACO</th>
                 <th>Region / Track</th>
-                <th className="cursor-pointer hover:text-slate-700" onClick={() => toggleSort('beneficiaries')}>
+                <th className="cursor-pointer hover:text-maroon-800" onClick={() => toggleSort('beneficiaries')}>
                   <span className="flex items-center gap-1">Beneficiaries <SortIcon k="beneficiaries" /></span>
                 </th>
-                <th className="cursor-pointer hover:text-slate-700 text-right" onClick={() => toggleSort('savingsPct')}>
+                <th className="cursor-pointer hover:text-maroon-800 text-right" onClick={() => toggleSort('savingsPct')}>
                   <span className="flex items-center justify-end gap-1">Savings % <SortIcon k="savingsPct" /></span>
                 </th>
-                <th className="cursor-pointer hover:text-slate-700 text-right" onClick={() => toggleSort('qualityScore')}>
+                <th className="cursor-pointer hover:text-maroon-800 text-right" onClick={() => toggleSort('qualityScore')}>
                   <span className="flex items-center justify-end gap-1">Quality <SortIcon k="qualityScore" /></span>
                 </th>
-                <th className="cursor-pointer hover:text-slate-700 text-center" onClick={() => toggleSort('riskScore')}>
+                <th className="cursor-pointer hover:text-maroon-800 text-center" onClick={() => toggleSort('riskScore')}>
                   <span className="flex items-center justify-center gap-1">Risk <SortIcon k="riskScore" /></span>
                 </th>
                 <th>Status</th>
@@ -259,20 +259,20 @@ function PortfolioTab({ acos }: { acos: AcoRecord[] }) {
                     onClick={() => setExpandedId(expandedId === aco.id ? null : aco.id)}
                   >
                     <td>
-                      <div className="font-medium text-slate-800 text-xs">{aco.name}</div>
-                      <div className="text-[10px] text-slate-400 font-mono">{aco.acoId}</div>
+                      <div className="font-medium text-maroon-900 text-xs">{aco.name}</div>
+                      <div className="text-[10px] text-maroon-800/40 font-mono">{aco.acoId}</div>
                     </td>
                     <td>
-                      <div className="text-xs text-slate-600">{aco.region}</div>
-                      <div className="text-[10px] text-slate-400">{aco.track}</div>
+                      <div className="text-xs text-maroon-800/70">{aco.region}</div>
+                      <div className="text-[10px] text-maroon-800/40">{aco.track}</div>
                     </td>
-                    <td className="text-slate-700">{aco.beneficiaries.toLocaleString()}</td>
+                    <td className="text-maroon-800">{aco.beneficiaries.toLocaleString()}</td>
                     <td className="text-right">
                       <span className={['font-semibold text-sm', aco.savingsPct >= 3 ? 'text-emerald-600' : aco.savingsPct >= 0 ? 'text-amber-600' : 'text-red-500'].join(' ')}>
                         {aco.savingsPct >= 0 ? '+' : ''}{aco.savingsPct.toFixed(2)}%
                       </span>
                     </td>
-                    <td className="text-right font-semibold text-slate-800">{aco.qualityScore.toFixed(1)}</td>
+                    <td className="text-right font-semibold text-maroon-900">{aco.qualityScore.toFixed(1)}</td>
                     <td className="text-center">
                       <span className={['inline-flex items-center justify-center w-10 h-6 rounded text-xs font-bold',
                         aco.riskScore >= 75 ? 'bg-red-100 text-red-700' :
@@ -286,7 +286,7 @@ function PortfolioTab({ acos }: { acos: AcoRecord[] }) {
                   {/* Inline expand row */}
                   {expandedId === aco.id && (
                     <tr>
-                      <td colSpan={7} className="bg-slate-50 px-5 py-4">
+                      <td colSpan={7} className="bg-cream-100 px-5 py-4">
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
                           {[
                             { label: 'Benchmark', value: '$' + aco.benchmark + 'M' },
@@ -298,9 +298,9 @@ function PortfolioTab({ acos }: { acos: AcoRecord[] }) {
                             { label: 'Risk Level', value: aco.riskLevel.toUpperCase() },
                             { label: 'Track', value: aco.track },
                           ].map(d => (
-                            <div key={d.label} className="bg-white rounded-lg p-3 border border-surface-border">
-                              <p className="text-[10px] text-slate-400 uppercase tracking-wide">{d.label}</p>
-                              <p className="font-semibold text-slate-800 mt-0.5">{d.value}</p>
+                            <div key={d.label} className="bg-white rounded-lg p-3 border border-cream-300">
+                              <p className="text-[10px] text-maroon-800/40 uppercase tracking-wide">{d.label}</p>
+                              <p className="font-semibold text-maroon-900 mt-0.5">{d.value}</p>
                             </div>
                           ))}
                         </div>
@@ -325,8 +325,8 @@ function ComparisonTab({ selected }: { selected: AcoRecord[] }) {
       <Card>
         <div className="flex flex-col items-center justify-center py-16 gap-3 text-center">
           <Filter className="w-8 h-8 text-slate-300" />
-          <p className="text-sm font-semibold text-slate-500">No ACOs selected</p>
-          <p className="text-xs text-slate-400">Use the ACO selector above to choose 2–4 ACOs to compare</p>
+          <p className="text-sm font-semibold text-maroon-800/60">No ACOs selected</p>
+          <p className="text-xs text-maroon-800/40">Use the ACO selector above to choose 2–4 ACOs to compare</p>
         </div>
       </Card>
     );
@@ -357,12 +357,12 @@ function ComparisonTab({ selected }: { selected: AcoRecord[] }) {
       {/* Side-by-side metric cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {selected.map((aco, ci) => (
-          <div key={aco.id} className="bg-white rounded-xl border-2 border-surface-border p-4" style={{ borderColor: ACO_COLORS[ci] + '40' }}>
+          <div key={aco.id} className="bg-white rounded-xl border-2 border-cream-300 p-4" style={{ borderColor: ACO_COLORS[ci] + '40' }}>
             <div className="flex items-center gap-2 mb-3">
               <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: ACO_COLORS[ci] }} />
               <div>
-                <p className="text-xs font-semibold text-slate-700 leading-tight">{aco.acoId}</p>
-                <p className="text-[10px] text-slate-400 truncate max-w-[100px]">{aco.name}</p>
+                <p className="text-xs font-semibold text-maroon-800 leading-tight">{aco.acoId}</p>
+                <p className="text-[10px] text-maroon-800/40 truncate max-w-[100px]">{aco.name}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -373,8 +373,8 @@ function ComparisonTab({ selected }: { selected: AcoRecord[] }) {
                 { label: 'Benes',   value: (aco.beneficiaries / 1000).toFixed(1) + 'K' },
               ].map(m => (
                 <div key={m.label}>
-                  <p className="text-[10px] text-slate-400">{m.label}</p>
-                  <p className="text-sm font-bold text-slate-800">{m.value}</p>
+                  <p className="text-[10px] text-maroon-800/40">{m.label}</p>
+                  <p className="text-sm font-bold text-maroon-900">{m.value}</p>
                 </div>
               ))}
             </div>
@@ -463,14 +463,14 @@ function MonthlyTab({ selected }: { selected: AcoRecord[] }) {
   return (
     <div className="flex flex-col gap-5">
       {/* Metric selector */}
-      <div className="flex gap-1 bg-slate-100 p-1 rounded-xl overflow-x-auto">
+      <div className="flex gap-1 bg-cream-200 p-1 rounded-xl overflow-x-auto">
         {METRICS.map(m => (
           <button
             key={m.key}
             onClick={() => setMetric(m.key)}
             className={[
               'flex-shrink-0 px-4 py-2 rounded-lg text-xs font-semibold transition-colors',
-              metric === m.key ? 'bg-white text-brand-700 shadow-card' : 'text-slate-500 hover:text-slate-700',
+              metric === m.key ? 'bg-white text-maroon-900 shadow-card' : 'text-maroon-800/60 hover:text-maroon-800',
             ].join(' ')}
           >
             {m.label}
@@ -531,9 +531,9 @@ function MonthlyTab({ selected }: { selected: AcoRecord[] }) {
 
       {/* Monthly summary table */}
       <Card padding={false}>
-        <div className="px-5 py-4 border-b border-surface-border">
-          <h3 className="text-sm font-semibold text-slate-800">Monthly Summary Table</h3>
-          <p className="text-xs text-slate-400 mt-0.5">
+        <div className="px-5 py-4 border-b border-cream-300">
+          <h3 className="text-sm font-semibold text-maroon-900">Monthly Summary Table</h3>
+          <p className="text-xs text-maroon-800/40 mt-0.5">
             {METRICS.find(m => m.key === metric)!.label} — all 8 months
           </p>
         </div>
@@ -558,11 +558,11 @@ function MonthlyTab({ selected }: { selected: AcoRecord[] }) {
                 return (
                   <tr key={aco.id}>
                     <td>
-                      <span className="font-medium text-slate-800 text-xs">{aco.acoId}</span>
-                      <span className="text-[10px] text-slate-400 ml-1.5 hidden sm:inline">{aco.region}</span>
+                      <span className="font-medium text-maroon-900 text-xs">{aco.acoId}</span>
+                      <span className="text-[10px] text-maroon-800/40 ml-1.5 hidden sm:inline">{aco.region}</span>
                     </td>
                     {vals.map((v, i) => (
-                      <td key={i} className="text-right text-xs tabular-nums text-slate-700">
+                      <td key={i} className="text-right text-xs tabular-nums text-maroon-800">
                         {typeof v === 'number' ? (metric === 'beneficiaries' ? v.toLocaleString() : v.toFixed(metric === 'readmissionRate' || metric === 'savings' ? 2 : 1)) : v}
                       </td>
                     ))}
@@ -624,7 +624,7 @@ export function CmsAnalytics() {
         subtitle="Portfolio-wide ACO performance analysis — FY2026"
         breadcrumb={['CMS Analytics', 'Analytics']}
         actions={
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-maroon-800/40">
             {filteredAcos.length} of {mockAcos.length} ACOs shown
           </span>
         }
@@ -635,8 +635,8 @@ export function CmsAnalytics() {
         <div className="flex flex-wrap items-center gap-4">
           {/* Region */}
           <div className="flex items-center gap-2">
-            <Filter className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Region</span>
+            <Filter className="w-3.5 h-3.5 text-maroon-800/40 flex-shrink-0" />
+            <span className="text-xs font-semibold text-maroon-800/60 uppercase tracking-wide">Region</span>
             <div className="flex gap-1">
               {REGIONS.map(r => (
                 <button
@@ -644,7 +644,7 @@ export function CmsAnalytics() {
                   onClick={() => setRegionFilter(r)}
                   className={[
                     'px-2.5 py-1 rounded-lg text-xs font-medium transition-colors',
-                    regionFilter === r ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200',
+                    regionFilter === r ? 'bg-maroon-900 text-white' : 'bg-cream-200 text-maroon-800/70 hover:bg-slate-200',
                   ].join(' ')}
                 >
                   {r}
@@ -654,7 +654,7 @@ export function CmsAnalytics() {
           </div>
           {/* Status */}
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Status</span>
+            <span className="text-xs font-semibold text-maroon-800/60 uppercase tracking-wide">Status</span>
             <div className="flex gap-1">
               {STATUSES.map(s => (
                 <button
@@ -662,7 +662,7 @@ export function CmsAnalytics() {
                   onClick={() => setStatusFilter(s)}
                   className={[
                     'px-2.5 py-1 rounded-lg text-xs font-medium transition-colors',
-                    statusFilter === s ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200',
+                    statusFilter === s ? 'bg-maroon-900 text-white' : 'bg-cream-200 text-maroon-800/70 hover:bg-slate-200',
                   ].join(' ')}
                 >
                   {s}
@@ -679,10 +679,10 @@ export function CmsAnalytics() {
       {/* ACO multi-select chips */}
       <Card className="mb-5">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide mr-1">
+          <span className="text-xs font-semibold text-maroon-800/60 uppercase tracking-wide mr-1">
             Select ACOs
           </span>
-          <span className="text-xs text-slate-400 mr-2">(up to 6 for comparison)</span>
+          <span className="text-xs text-maroon-800/40 mr-2">(up to 6 for comparison)</span>
           {mockAcos.map(aco => (
             <AcoSelectChip
               key={aco.id}
@@ -694,7 +694,7 @@ export function CmsAnalytics() {
           {selectedIds.size > 0 && (
             <button
               onClick={() => setSelectedIds(new Set())}
-              className="text-xs text-slate-400 hover:text-slate-600 ml-2 flex items-center gap-1"
+              className="text-xs text-maroon-800/40 hover:text-maroon-800/70 ml-2 flex items-center gap-1"
             >
               <X className="w-3 h-3" /> Clear all
             </button>
@@ -703,19 +703,19 @@ export function CmsAnalytics() {
       </Card>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-slate-100 p-1 rounded-xl mb-5">
+      <div className="flex gap-1 bg-cream-200 p-1 rounded-xl mb-5">
         {TABS.map(t => (
           <button
             key={t.key}
             onClick={() => setActiveTab(t.key)}
             className={[
               'flex-1 px-4 py-2 rounded-lg text-xs font-semibold transition-colors',
-              activeTab === t.key ? 'bg-white text-brand-700 shadow-card' : 'text-slate-500 hover:text-slate-700',
+              activeTab === t.key ? 'bg-white text-maroon-900 shadow-card' : 'text-maroon-800/60 hover:text-maroon-800',
             ].join(' ')}
           >
             {t.label}
             {t.key === 'comparison' && selectedIds.size > 0 && (
-              <span className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full bg-brand-600 text-white text-[9px] font-bold">
+              <span className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full bg-maroon-900 text-white text-[9px] font-bold">
                 {selectedIds.size}
               </span>
             )}
@@ -730,3 +730,4 @@ export function CmsAnalytics() {
     </>
   );
 }
+

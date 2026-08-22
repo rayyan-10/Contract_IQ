@@ -33,17 +33,17 @@ const SECTIONS: Array<{ key: Section; label: string; icon: React.ReactNode }> = 
 // ─── Chart constants ──────────────────────────────────────────────────────────
 
 const C = {
-  brand:   '#6366f1',
+  brand:   '#3d1515',
   emerald: '#10b981',
   amber:   '#f59e0b',
   red:     '#ef4444',
-  slate:   '#94a3b8',
+  slate:   '#8b7355',
   sky:     '#0ea5e9',
   violet:  '#8b5cf6',
 };
 
-const TICK = { fontSize: 11, fill: '#94a3b8' };
-const GRID = { strokeDasharray: '3 3', stroke: '#f1f5f9' };
+const TICK = { fontSize: 11, fill: '#8b7355' };
+const GRID = { strokeDasharray: '3 3', stroke: '#ede8d0' };
 const TIP  = {
   contentStyle: { fontSize: 12, borderRadius: 8, border: '1px solid #e2e8f0', boxShadow: 'none' },
   cursor: { stroke: '#e2e8f0' },
@@ -115,7 +115,7 @@ function QualitySection({ data }: { data: ReturnType<typeof getAcoProfile> }) {
             <BarChart data={quality.domains} layout="vertical" margin={{ top: 0, right: 20, left: 0, bottom: 0 }}>
               <CartesianGrid {...GRID} horizontal={false} />
               <XAxis type="number" domain={[60, 100]} tick={TICK} tickLine={false} axisLine={false} />
-              <YAxis dataKey="domain" type="category" tick={{ fontSize: 10, fill: '#94a3b8' }} tickLine={false} axisLine={false} width={110} />
+              <YAxis dataKey="domain" type="category" tick={{ fontSize: 10, fill: '#8b7355' }} tickLine={false} axisLine={false} width={110} />
               <Tooltip {...TIP} />
               <Legend wrapperStyle={{ fontSize: 12 }} />
               <Bar dataKey="benchmark" fill={C.slate}  radius={[0, 3, 3, 0]} name="Benchmark" barSize={8} />
@@ -139,7 +139,7 @@ function QualitySection({ data }: { data: ReturnType<typeof getAcoProfile> }) {
               margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
             >
               <PolarGrid stroke="#e2e8f0" />
-              <PolarAngleAxis dataKey="domain" tick={{ fontSize: 10, fill: '#94a3b8' }} />
+              <PolarAngleAxis dataKey="domain" tick={{ fontSize: 10, fill: '#8b7355' }} />
               <Radar dataKey="score" stroke={C.brand} fill={C.brand} fillOpacity={0.15} strokeWidth={2} />
             </RadarChart>
           </ResponsiveContainer>
@@ -181,9 +181,9 @@ function UtilizationSection({ data }: { data: ReturnType<typeof getAcoProfile> }
     <div className="flex flex-col gap-5">
       {/* Metrics table */}
       <Card padding={false}>
-        <div className="px-5 py-4 border-b border-surface-border">
-          <h3 className="text-sm font-semibold text-slate-800">Key Utilization Metrics</h3>
-          <p className="text-xs text-slate-400 mt-0.5">Rate vs. national benchmark</p>
+        <div className="px-5 py-4 border-b border-cream-300">
+          <h3 className="text-sm font-semibold text-maroon-900">Key Utilization Metrics</h3>
+          <p className="text-xs text-maroon-800/40 mt-0.5">Rate vs. national benchmark</p>
         </div>
         <table className="data-table">
           <thead>
@@ -202,10 +202,10 @@ function UtilizationSection({ data }: { data: ReturnType<typeof getAcoProfile> }
               const better = higherIsBetter ? m.rate >= m.benchmark : m.rate <= m.benchmark;
               return (
                 <tr key={m.category}>
-                  <td className="font-medium text-slate-800">{m.category}</td>
-                  <td className="text-right font-semibold text-slate-800">{m.rate}</td>
-                  <td className="text-right text-slate-500">{m.benchmark}</td>
-                  <td className="text-right text-slate-400 text-xs">{m.unit}</td>
+                  <td className="font-medium text-maroon-900">{m.category}</td>
+                  <td className="text-right font-semibold text-maroon-900">{m.rate}</td>
+                  <td className="text-right text-maroon-800/60">{m.benchmark}</td>
+                  <td className="text-right text-maroon-800/40 text-xs">{m.unit}</td>
                   <td>
                     <Badge variant={v} dot>
                       {better ? 'Better' : 'Above avg'}
@@ -299,8 +299,8 @@ function RiskSection({ data }: { data: ReturnType<typeof getAcoProfile> }) {
 
       {/* Risk band detail table */}
       <Card padding={false}>
-        <div className="px-5 py-4 border-b border-surface-border">
-          <h3 className="text-sm font-semibold text-slate-800">Risk Band Detail</h3>
+        <div className="px-5 py-4 border-b border-cream-300">
+          <h3 className="text-sm font-semibold text-maroon-900">Risk Band Detail</h3>
         </div>
         <table className="data-table">
           <thead>
@@ -317,12 +317,12 @@ function RiskSection({ data }: { data: ReturnType<typeof getAcoProfile> }) {
                 <td>
                   <span className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: PIE_COLORS[i] }} />
-                    <span className="font-medium text-slate-800">{b.band}</span>
+                    <span className="font-medium text-maroon-900">{b.band}</span>
                   </span>
                 </td>
-                <td className="text-right font-semibold text-slate-800">{b.count.toLocaleString()}</td>
-                <td className="text-right text-slate-600">{b.pct}%</td>
-                <td className="text-right text-slate-600">{b.avgRaf}</td>
+                <td className="text-right font-semibold text-maroon-900">{b.count.toLocaleString()}</td>
+                <td className="text-right text-maroon-800/70">{b.pct}%</td>
+                <td className="text-right text-maroon-800/70">{b.avgRaf}</td>
               </tr>
             ))}
           </tbody>
@@ -346,7 +346,7 @@ function CostSection({ data }: { data: ReturnType<typeof getAcoProfile> }) {
             <BarChart data={cost.drivers} layout="vertical" margin={{ top: 0, right: 20, left: 10, bottom: 0 }}>
               <CartesianGrid {...GRID} horizontal={false} />
               <XAxis type="number" tick={TICK} tickLine={false} axisLine={false} tickFormatter={v => '$' + v + 'M'} />
-              <YAxis dataKey="category" type="category" tick={{ fontSize: 10, fill: '#94a3b8' }} tickLine={false} axisLine={false} width={110} />
+              <YAxis dataKey="category" type="category" tick={{ fontSize: 10, fill: '#8b7355' }} tickLine={false} axisLine={false} width={110} />
               <Tooltip {...TIP} formatter={(v: number) => ['$' + v + 'M', 'Expenditure']} />
               <Bar dataKey="amount" fill={C.brand} radius={[0, 4, 4, 0]} name="Amount ($M)" />
             </BarChart>
@@ -379,8 +379,8 @@ function CostSection({ data }: { data: ReturnType<typeof getAcoProfile> }) {
 
       {/* YoY table */}
       <Card padding={false}>
-        <div className="px-5 py-4 border-b border-surface-border">
-          <h3 className="text-sm font-semibold text-slate-800">Year-over-Year Change by Category</h3>
+        <div className="px-5 py-4 border-b border-cream-300">
+          <h3 className="text-sm font-semibold text-maroon-900">Year-over-Year Change by Category</h3>
         </div>
         <table className="data-table">
           <thead>
@@ -394,9 +394,9 @@ function CostSection({ data }: { data: ReturnType<typeof getAcoProfile> }) {
           <tbody>
             {cost.drivers.map(d => (
               <tr key={d.category}>
-                <td className="font-medium text-slate-800">{d.category}</td>
-                <td className="text-right font-semibold text-slate-800">${d.amount}M</td>
-                <td className="text-right text-slate-500">{d.pct}%</td>
+                <td className="font-medium text-maroon-900">{d.category}</td>
+                <td className="text-right font-semibold text-maroon-900">${d.amount}M</td>
+                <td className="text-right text-maroon-800/60">{d.pct}%</td>
                 <td className="text-right">
                   <span className={[
                     'flex items-center justify-end gap-1 font-semibold text-xs',
@@ -434,8 +434,8 @@ export function AcoAnalytics() {
         subtitle={profile.acoName + ' — ' + profile.trackType}
         breadcrumb={['ACO Operations', 'Analytics']}
         actions={
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <span className="font-medium text-slate-600">PY {profile.performanceYear}</span>
+          <div className="flex items-center gap-2 text-xs text-maroon-800/40">
+            <span className="font-medium text-maroon-800/70">PY {profile.performanceYear}</span>
             <span>·</span>
             <span>{profile.totalBeneficiaries.toLocaleString()} beneficiaries</span>
             <span>·</span>
@@ -445,7 +445,7 @@ export function AcoAnalytics() {
       />
 
       {/* Section tabs */}
-      <div className="flex gap-1 bg-slate-100 p-1 rounded-xl mb-5 overflow-x-auto">
+      <div className="flex gap-1 bg-cream-200 p-1 rounded-xl mb-5 overflow-x-auto">
         {SECTIONS.map(s => (
           <button
             key={s.key}
@@ -453,8 +453,8 @@ export function AcoAnalytics() {
             className={[
               'flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-semibold transition-colors duration-150',
               activeSection === s.key
-                ? 'bg-white text-brand-700 shadow-card'
-                : 'text-slate-500 hover:text-slate-700',
+                ? 'bg-white text-maroon-900 shadow-card'
+                : 'text-maroon-800/60 hover:text-maroon-800',
             ].join(' ')}
           >
             {s.icon}
@@ -472,3 +472,4 @@ export function AcoAnalytics() {
     </>
   );
 }
+
