@@ -62,11 +62,10 @@ export function CmsDashboard() {
   return (
     <>
       <PageHeader
-        title="CMS Dashboard"
-        subtitle="FY2026 · All Contracts Portfolio Overview"
-        breadcrumb={['CMS Analytics', 'Dashboard']}
+        title="Overview"
+        subtitle="FY2026 Performance"
         actions={
-          <Link to="/cms/analytics" className="flex items-center gap-1.5 text-xs font-semibold text-maroon-900 hover:text-brand-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-lg transition-colors">
+          <Link to="/cms/analytics" className="flex items-center gap-1.5 text-xs font-semibold text-maroon-900 hover:text-maroon-800 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-lg transition-colors">
             Full Analytics <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         }
@@ -74,15 +73,15 @@ export function CmsDashboard() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <KpiCard label="Portfolio Savings"      value="$74.5M"   change={3.2} trend="up"      changeLabel="vs prior year" icon={DollarSign}    />
-        <KpiCard label="Assigned Beneficiaries" value="214,390"  change={1.8} trend="up"      icon={Users}                                      />
-        <KpiCard label="Quality Composite"      value="84.2"     change={2.1} trend="up"      icon={Activity}                                   />
-        <KpiCard label="At-Risk ACOs"           value={atRisk + ' / ' + contracts.length} trend={atRisk > 1 ? 'down' : 'neutral'} icon={AlertTriangle} />
+        <KpiCard label="Portfolio Savings"      value="$74.5M"   change={3.2} trend="up"      changeLabel="vs prior year" icon={DollarSign}  accent="emerald"  />
+        <KpiCard label="Assigned Beneficiaries" value="214,390"  change={1.8} trend="up"      icon={Users}              accent="amber"    />
+        <KpiCard label="Quality Composite"      value="84.2"     change={2.1} trend="up"      icon={Activity}           accent="maroon"   />
+        <KpiCard label="At-Risk ACOs"           value={atRisk + ' / ' + contracts.length} trend={atRisk > 1 ? 'down' : 'neutral'} icon={AlertTriangle} accent="red" />
       </div>
 
       {/* Charts row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-        <ChartCard title="Expenditure PMPM vs Benchmark" subtitle="Portfolio aggregate — YTD ($)" className="lg:col-span-2" height={260}>
+        <ChartCard title="Expenditure PMPM vs Benchmark" subtitle="Portfolio aggregate — YTD ($)" className="lg:col-span-2" height={260} accent="maroon">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={savingsData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
               <defs>
@@ -102,7 +101,7 @@ export function CmsDashboard() {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Quality by Domain" subtitle="Score vs benchmark" height={260}>
+        <ChartCard title="Quality by Domain" subtitle="Score vs benchmark" height={260} accent="amber">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={qualityData} layout="vertical" margin={{ top: 0, right: 10, left: 0, bottom: 0 }}>
               <CartesianGrid {...GRID} horizontal={false} />
@@ -119,7 +118,7 @@ export function CmsDashboard() {
 
       {/* Charts row 2 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
-        <ChartCard title="Portfolio Savings Rate" subtitle="Monthly trend — all ACOs (%)" height={220}>
+        <ChartCard title="Portfolio Savings Rate" subtitle="Monthly trend — all ACOs (%)" height={220} accent="emerald">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={savingsData} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
               <CartesianGrid {...GRID} />
@@ -131,7 +130,7 @@ export function CmsDashboard() {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="ACO Risk Distribution" subtitle="Count by risk level — 6 months" className="lg:col-span-2" height={220}>
+        <ChartCard title="ACO Risk Distribution" subtitle="Count by risk level — 6 months" className="lg:col-span-2" height={220} accent="maroon">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={riskTrend} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
               <CartesianGrid {...GRID} />

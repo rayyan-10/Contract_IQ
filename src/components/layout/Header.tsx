@@ -70,26 +70,11 @@ export function Header() {
 
       {/* Right */}
       <div className="flex items-center gap-1.5">
-        {/* Role badge */}
-        {user && (
-          <div className={[
-            'hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[10px] font-bold uppercase tracking-wide',
-            isAco
-              ? 'bg-amber-50 text-amber-700 border-amber-200'
-              : 'bg-amber-50 text-amber-700 border-amber-200',
-          ].join(' ')}>
-            {isAco
-              ? <Stethoscope className="w-3 h-3" />
-              : <Building2   className="w-3 h-3" />}
-            {user.role}
-          </div>
-        )}
-
         {/* Notifications */}
         <div ref={notifRef} className="relative">
           <button
             onClick={() => { setNotifOpen(!notifOpen); setUserOpen(false); }}
-            className="relative p-2 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+            className="relative p-2 rounded-lg text-maroon-800/40 hover:bg-cream-200 hover:text-maroon-900 transition-colors"
             aria-label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ''}`}
           >
             <Bell className="w-5 h-5" />

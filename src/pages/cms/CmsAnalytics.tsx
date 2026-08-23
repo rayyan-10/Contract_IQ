@@ -96,13 +96,22 @@ function PortfolioTab({ acos }: { acos: AcoRecord[] }) {
   const [sortKey, setSortKey] = useState<keyof AcoRecord>('savingsPct');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [riskFilter, setRiskFilter] = useState<string>('all');
 
   const sorted = useMemo(() =>
-    [...acos].sort((a, b) => {
+    [...acos]
+      .filter(a => {
+        if (riskFilter !== 'all' && a.riskLevel !== riskFilter) return false;
+        if (!searchQuery.trim()) return true;
+        const q = searchQuery.toLowerCase();
+        return a.name.toLowerCase().includes(q) || a.acoId.toLowerCase().includes(q) || a.region.toLowerCase().includes(q) || a.track.toLowerCase().includes(q);
+      })
+      .sort((a, b) => {
       const av = a[sortKey] as number;
       const bv = b[sortKey] as number;
       return sortDir === 'desc' ? bv - av : av - bv;
-    }), [acos, sortKey, sortDir]);
+    }), [acos, sortKey, sortDir, searchQuery, riskFilter]);
 
   function toggleSort(key: keyof AcoRecord) {
     if (sortKey === key) setSortDir(d => d === 'desc' ? 'asc' : 'desc');
@@ -224,10 +233,46 @@ function PortfolioTab({ acos }: { acos: AcoRecord[] }) {
 
       {/* Sortable ACO table */}
       <Card padding={false}>
-        <div className="px-5 py-4 border-b border-cream-300 flex items-center justify-between">
-          <div>
-            <h3 className="text-sm font-semibold text-maroon-900">ACO Portfolio — All Records</h3>
-            <p className="text-xs text-maroon-800/40 mt-0.5">{acos.length} ACOs · Click column headers to sort</p>
+        <div className="px-5 py-4 border-b border-cream-300 flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <h3 className="text-sm font-semibold text-maroon-900">ACO Portfolio — All Records</h3>
+              <p className="text-xs text-maroon-800/40 mt-0.5">{sorted.length} of {acos.length} ACOs · Click headers to sort</p>
+            </div>
+            <div className="flex-shrink-0">
+              <input
+                type="text"
+                placeholder="Search by name, ID, region…"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                className="w-52 text-xs rounded-lg border border-cream-300 bg-cream-100 px-3 py-2 text-maroon-900 placeholder:text-maroon-800/30 focus:outline-none focus:ring-2 focus:ring-amber-400/40 focus:border-amber-400 transition-all"
+              />
+            </div>
+          </div>
+          {/* Risk level filter */}
+          <div className="flex items-center gap-2">
+            <Filter className="w-3.5 h-3.5 text-maroon-800/40" />
+            <span className="text-[10px] font-bold text-maroon-800/40 uppercase tracking-wider">Risk Level</span>
+            <div className="flex gap-1 ml-1">
+              {[
+                { key: 'all',      label: 'All',      color: '' },
+                { key: 'low',      label: 'Low',      color: 'bg-emerald-500' },
+                { key: 'medium',   label: 'Medium',   color: 'bg-amber-500' },
+                { key: 'high',     label: 'High',     color: 'bg-red-500' },
+                { key: 'critical', label: 'Critical', color: 'bg-red-800' },
+              ].map(f => (
+                <button key={f.key} onClick={() => setRiskFilter(f.key)}
+                  className={[
+                    'flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all',
+                    riskFilter === f.key
+                      ? 'bg-maroon-900 text-white'
+                      : 'bg-cream-200 text-maroon-800/60 hover:bg-cream-300',
+                  ].join(' ')}>
+                  {f.color && <span className={'w-2 h-2 rounded-full ' + f.color} />}
+                  {f.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
         <div className="overflow-x-auto">
@@ -286,21 +331,21 @@ function PortfolioTab({ acos }: { acos: AcoRecord[] }) {
                   {/* Inline expand row */}
                   {expandedId === aco.id && (
                     <tr>
-                      <td colSpan={7} className="bg-cream-100 px-5 py-4">
-                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                      <td colSpan={7} className="px-5 py-5 bg-gradient-to-b from-cream-200/80 to-cream-100/40 border-b-2 border-amber-300">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
                           {[
-                            { label: 'Benchmark', value: '$' + aco.benchmark + 'M' },
-                            { label: 'Actual Expenditure', value: '$' + aco.actualExpenditure + 'M' },
-                            { label: 'Savings Amount', value: '$' + aco.savings.toFixed(1) + 'M' },
-                            { label: 'High-Risk Beneficiaries', value: aco.highRiskBeneficiaries.toLocaleString() },
-                            { label: 'Providers', value: aco.providers },
-                            { label: 'Performance Year', value: aco.performanceYear },
-                            { label: 'Risk Level', value: aco.riskLevel.toUpperCase() },
-                            { label: 'Track', value: aco.track },
+                            { label: 'Benchmark', value: '$' + aco.benchmark + 'M', accent: 'border-l-maroon-900' },
+                            { label: 'Actual Expenditure', value: '$' + aco.actualExpenditure + 'M', accent: 'border-l-maroon-900' },
+                            { label: 'Savings Amount', value: '$' + aco.savings.toFixed(1) + 'M', accent: aco.savings >= 0 ? 'border-l-emerald-500' : 'border-l-red-500' },
+                            { label: 'High-Risk Beneficiaries', value: aco.highRiskBeneficiaries.toLocaleString(), accent: 'border-l-amber-400' },
+                            { label: 'Providers', value: aco.providers, accent: 'border-l-amber-400' },
+                            { label: 'Performance Year', value: aco.performanceYear, accent: 'border-l-cream-400' },
+                            { label: 'Risk Level', value: aco.riskLevel.toUpperCase(), accent: aco.riskLevel === 'low' ? 'border-l-emerald-500' : aco.riskLevel === 'critical' ? 'border-l-red-500' : 'border-l-amber-400' },
+                            { label: 'Track', value: aco.track, accent: 'border-l-cream-400' },
                           ].map(d => (
-                            <div key={d.label} className="bg-white rounded-lg p-3 border border-cream-300">
-                              <p className="text-[10px] text-maroon-800/40 uppercase tracking-wide">{d.label}</p>
-                              <p className="font-semibold text-maroon-900 mt-0.5">{d.value}</p>
+                            <div key={d.label} className={'bg-white rounded-xl p-4 border border-cream-300 border-l-4 ' + d.accent + ' shadow-sm hover:shadow-card transition-shadow'}>
+                              <p className="text-[9px] font-bold text-maroon-800/40 uppercase tracking-wider mb-1">{d.label}</p>
+                              <p className="text-sm font-bold text-maroon-900">{d.value}</p>
                             </div>
                           ))}
                         </div>
@@ -620,12 +665,10 @@ export function CmsAnalytics() {
   return (
     <>
       <PageHeader
-        title="CMS Analytics"
-        subtitle="Portfolio-wide ACO performance analysis — FY2026"
-        breadcrumb={['CMS Analytics', 'Analytics']}
+        title="Portfolio Analytics"
         actions={
           <span className="text-xs text-maroon-800/40">
-            {filteredAcos.length} of {mockAcos.length} ACOs shown
+            {filteredAcos.length} of {mockAcos.length} ACOs
           </span>
         }
       />

@@ -72,7 +72,7 @@ export async function predictRisk(acoId: string, inputs: PredictionInputs): Prom
       riskLevel: (['low','moderate','high','critical'].includes(riskLevel) ? riskLevel : score >= 55 ? 'high' : score >= 35 ? 'moderate' : 'low') as RiskPredictionResult['riskLevel'],
       riskScore: score,
       contributingFactors: buildMockFactors(inputs),
-      summary: String(pred.risk_label ?? (atRisk ? 'AT-RISK' : 'NON-RISK')) + ' — Risk probability: ' + probPct.toFixed(2) + '% (threshold: ' + String(pred.threshold ?? 23) + '%).',
+      summary: String(pred.risk_label ?? (atRisk ? 'AT-RISK' : 'NON-RISK')) + ' — Risk probability: ' + probPct.toFixed(2) + '%.',
     };
     return { result, inputId: inputId || null };
   } catch (err) {

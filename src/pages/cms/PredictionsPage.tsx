@@ -268,9 +268,7 @@ export function PredictionsPage() {
   return (
     <>
       <PageHeader
-        title="Prediction & Scenario Analysis"
-        subtitle="Analyze ACO performance using financial, quality, expenditure and beneficiary indicators."
-        breadcrumb={['CMS Analytics', 'Predictions']}
+        title="Predictions"
         actions={
           completedCount > 0 && (
             <Button variant="ghost" size="sm" icon={<RotateCcw className="w-3.5 h-3.5" />} onClick={handleReset}>
@@ -399,29 +397,18 @@ export function PredictionsPage() {
 
       {/* ── STEP 3: Run Analysis CTA ──────────────────────────────────────── */}
       {allComplete && selectedType && (
-        <div className="flex items-center justify-between p-5 rounded-xl bg-maroon-900 border border-maroon-800">
-          <div>
-            <p className="text-sm font-semibold text-white">
-              Ready to run{' '}
-              <span className="text-amber-400">
-                {ANALYSIS_OPTIONS.find(a => a.type === selectedType)?.title}
-              </span>
-              {' '}for <span className="text-amber-400 font-mono">{selectedAcoId}</span>
-            </p>
-            <p className="text-xs text-amber-400 mt-0.5">
-              All 8/8 inputs are validated and analysis type is selected.
-            </p>
-          </div>
-          <Button
-            variant="primary"
-            size="lg"
-            loading={running}
-            icon={!running ? <Play className="w-4 h-4" /> : undefined}
+        <div className="flex justify-center py-2">
+          <button
             onClick={handleRunAnalysis}
-            className="bg-amber-500 hover:bg-amber-400 flex-shrink-0"
+            disabled={running}
+            className="flex items-center gap-2 px-8 py-3 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 text-maroon-900 font-bold text-sm shadow-lg shadow-amber-300/30 hover:shadow-amber-400/40 hover:from-amber-300 hover:to-amber-400 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {running ? 'Analyzing…' : 'Run Analysis'}
-          </Button>
+            {running ? (
+              <><div className="w-4 h-4 rounded-full border-2 border-maroon-900/30 border-t-maroon-900 animate-spin" /> Analyzing…</>
+            ) : (
+              <><Play className="w-4 h-4" /> Run Analysis</>
+            )}
+          </button>
         </div>
       )}
 

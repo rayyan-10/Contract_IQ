@@ -39,7 +39,7 @@ export interface MonthlyAcoTrend {
 
 export const mockAcos: AcoRecord[] = [
   {
-    id: 'aco-001', name: 'Northeast Health Alliance ACO', acoId: 'ACO-001',
+    id: 'A00001', name: 'Northeast Health Alliance ACO', acoId: 'A00001',
     region: 'Northeast', track: 'MSSP Track 1B',
     beneficiaries: 24_180, providers: 312,
     benchmark: 187.4, actualExpenditure: 179.6, savings: 7.8, savingsPct: 4.16,
@@ -47,7 +47,7 @@ export const mockAcos: AcoRecord[] = [
     status: 'on-track', performanceYear: 2026, highRiskBeneficiaries: 2_890,
   },
   {
-    id: 'aco-002', name: 'Midwest Premier Care Network', acoId: 'ACO-002',
+    id: 'A00002', name: 'Midwest Premier Care Network', acoId: 'A00002',
     region: 'Midwest', track: 'MSSP Track 3',
     beneficiaries: 31_450, providers: 428,
     benchmark: 241.8, actualExpenditure: 225.4, savings: 16.4, savingsPct: 6.78,
@@ -55,7 +55,7 @@ export const mockAcos: AcoRecord[] = [
     status: 'exceeded', performanceYear: 2026, highRiskBeneficiaries: 3_120,
   },
   {
-    id: 'aco-003', name: 'Gulf Coast Care Network', acoId: 'ACO-003',
+    id: 'A00003', name: 'Gulf Coast Care Network', acoId: 'A00003',
     region: 'Southeast', track: 'MSSP Track 1A',
     beneficiaries: 18_640, providers: 241,
     benchmark: 154.2, actualExpenditure: 151.8, savings: 2.4, savingsPct: 1.56,
@@ -63,7 +63,7 @@ export const mockAcos: AcoRecord[] = [
     status: 'at-risk', performanceYear: 2026, highRiskBeneficiaries: 3_410,
   },
   {
-    id: 'aco-004', name: 'Mountain West Health Partners', acoId: 'ACO-004',
+    id: 'A00004', name: 'Mountain West Health Partners', acoId: 'A00004',
     region: 'Southwest', track: 'ACO REACH',
     beneficiaries: 41_200, providers: 589,
     benchmark: 318.6, actualExpenditure: 298.1, savings: 20.5, savingsPct: 6.43,
@@ -71,7 +71,7 @@ export const mockAcos: AcoRecord[] = [
     status: 'exceeded', performanceYear: 2026, highRiskBeneficiaries: 4_820,
   },
   {
-    id: 'aco-005', name: 'Pacific Coast ACO Alliance', acoId: 'ACO-005',
+    id: 'A00005', name: 'Pacific Coast ACO Alliance', acoId: 'A00005',
     region: 'West', track: 'MSSP Track 2',
     beneficiaries: 27_890, providers: 374,
     benchmark: 221.0, actualExpenditure: 214.5, savings: 6.5, savingsPct: 2.94,
@@ -79,7 +79,7 @@ export const mockAcos: AcoRecord[] = [
     status: 'on-track', performanceYear: 2026, highRiskBeneficiaries: 3_240,
   },
   {
-    id: 'aco-006', name: 'Appalachian Community Health ACO', acoId: 'ACO-006',
+    id: 'A00006', name: 'Appalachian Community Health ACO', acoId: 'A00006',
     region: 'Southeast', track: 'MSSP Track 1A',
     beneficiaries: 14_320, providers: 187,
     benchmark: 118.9, actualExpenditure: 122.4, savings: -3.5, savingsPct: -2.94,
@@ -87,7 +87,7 @@ export const mockAcos: AcoRecord[] = [
     status: 'under-review', performanceYear: 2026, highRiskBeneficiaries: 2_890,
   },
   {
-    id: 'aco-007', name: 'Great Lakes Health Network', acoId: 'ACO-007',
+    id: 'A00007', name: 'Great Lakes Health Network', acoId: 'A00007',
     region: 'Midwest', track: 'MSSP Track 3',
     beneficiaries: 36_710, providers: 501,
     benchmark: 284.2, actualExpenditure: 265.8, savings: 18.4, savingsPct: 6.47,
@@ -95,7 +95,7 @@ export const mockAcos: AcoRecord[] = [
     status: 'exceeded', performanceYear: 2026, highRiskBeneficiaries: 3_980,
   },
   {
-    id: 'aco-008', name: 'Desert Sun ACO Collaborative', acoId: 'ACO-008',
+    id: 'A00008', name: 'Desert Sun ACO Collaborative', acoId: 'A00008',
     region: 'Southwest', track: 'MSSP Track 1B',
     beneficiaries: 21_540, providers: 289,
     benchmark: 172.3, actualExpenditure: 168.9, savings: 3.4, savingsPct: 1.97,
@@ -134,14 +134,14 @@ function buildMonthlyTrend(
 }
 
 export const mockMonthlyTrends: Record<string, MonthlyAcoTrend[]> = {
-  'aco-001': buildMonthlyTrend(890,  4.16, 88.2, 24_180, true),
-  'aco-002': buildMonthlyTrend(892,  6.78, 91.5, 31_450, true),
-  'aco-003': buildMonthlyTrend(888,  1.56, 74.8, 18_640, false),
-  'aco-004': buildMonthlyTrend(895,  6.43, 89.7, 41_200, true),
-  'aco-005': buildMonthlyTrend(891,  2.94, 82.1, 27_890, true),
-  'aco-006': buildMonthlyTrend(885, -2.94, 69.3, 14_320, false),
-  'aco-007': buildMonthlyTrend(893,  6.47, 90.1, 36_710, true),
-  'aco-008': buildMonthlyTrend(889,  1.97, 77.4, 21_540, true),
+  'A00001': buildMonthlyTrend(890,  4.16, 88.2, 24_180, true),
+  'A00002': buildMonthlyTrend(892,  6.78, 91.5, 31_450, true),
+  'A00003': buildMonthlyTrend(888,  1.56, 74.8, 18_640, false),
+  'A00004': buildMonthlyTrend(895,  6.43, 89.7, 41_200, true),
+  'A00005': buildMonthlyTrend(891,  2.94, 82.1, 27_890, true),
+  'A00006': buildMonthlyTrend(885, -2.94, 69.3, 14_320, false),
+  'A00007': buildMonthlyTrend(893,  6.47, 90.1, 36_710, true),
+  'A00008': buildMonthlyTrend(889,  1.97, 77.4, 21_540, true),
 };
 
 // ─── Portfolio monthly aggregate ──────────────────────────────────────────────

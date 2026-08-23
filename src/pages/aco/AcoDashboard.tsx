@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, TrendingUp, Award, BarChart2, DollarSign, AlertTriangle, ArrowRight, Activity } from 'lucide-react';
+import { Users, TrendingUp, Award, DollarSign, AlertTriangle, ArrowRight, Activity } from 'lucide-react';
 import { PageHeader } from '@/components/common/PageHeader';
 import { KpiCard } from '@/components/common/KpiCard';
 import { ChartCard } from '@/components/common/ChartCard';
@@ -16,7 +16,7 @@ import type { BadgeVariant } from '@/types';
 
 const TICK = { fontSize: 11, fill: '#8b7355' };
 const GRID = { strokeDasharray: '3 3', stroke: '#ede8d0' };
-const TIP  = { contentStyle: { fontSize: 12, borderRadius: 8, border: '1px solid #e2e8f0', boxShadow: 'none' } };
+const TIP  = { contentStyle: { fontSize: 12, borderRadius: 8, border: '1px solid #ede8d0', boxShadow: '0 4px 12px rgba(61,21,21,0.06)', background: '#faf8f5' } };
 
 const savingsData = [
   { q: 'Q1 25', actual: 3.1, target: 3.5 },
@@ -57,11 +57,11 @@ const utilData = [
 ];
 
 const providers: Array<{ name: string; specialty: string; quality: number; costIndex: number; status: string }> = [
-  { name: 'Dr. [Provider A]', specialty: 'Internal Medicine', quality: 94, costIndex: 0.91, status: 'active' },
-  { name: 'Dr. [Provider B]', specialty: 'Cardiology',        quality: 88, costIndex: 1.12, status: 'active' },
-  { name: 'Dr. [Provider C]', specialty: 'Family Medicine',   quality: 79, costIndex: 0.98, status: 'active' },
-  { name: 'Dr. [Provider D]', specialty: 'Endocrinology',     quality: 91, costIndex: 0.95, status: 'active' },
-  { name: 'Dr. [Provider E]', specialty: 'Geriatrics',        quality: 86, costIndex: 1.04, status: 'pending' },
+  { name: 'Sunrise Valley Medical Center', specialty: 'Internal Medicine', quality: 94, costIndex: 0.91, status: 'active' },
+  { name: 'Dr. Rachel Greenwood',          specialty: 'Cardiology',        quality: 88, costIndex: 1.12, status: 'active' },
+  { name: 'Lakeside Family Clinic',        specialty: 'Family Medicine',   quality: 79, costIndex: 0.98, status: 'active' },
+  { name: 'Dr. Marcus Chen',              specialty: 'Endocrinology',     quality: 91, costIndex: 0.95, status: 'active' },
+  { name: 'Evergreen Geriatrics Group',    specialty: 'Geriatrics',        quality: 86, costIndex: 1.04, status: 'pending' },
 ];
 
 const statusVariant: Record<string, BadgeVariant> = {
@@ -71,16 +71,13 @@ const statusVariant: Record<string, BadgeVariant> = {
 export function AcoDashboard() {
   const { user } = useAuth();
   const acoName = user?.acoName ?? 'Your ACO';
-  const acoId   = user?.acoId   ?? 'ACO-001';
 
   return (
     <>
       <PageHeader
-        title="ACO Dashboard"
-        subtitle={acoName + ' · ' + acoId + ' · FY2026 Performance'}
-        breadcrumb={['ACO Operations', 'Dashboard']}
+        title="Overview"
         actions={
-          <Link to="/aco/analytics" className="flex items-center gap-1.5 text-xs font-semibold text-maroon-900 hover:text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1.5 rounded-lg transition-colors">
+          <Link to="/aco/analytics" className="flex items-center gap-1.5 text-xs font-semibold text-maroon-900 hover:text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-lg transition-colors hover:bg-amber-100">
             Deep Analytics <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         }
@@ -88,15 +85,15 @@ export function AcoDashboard() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <KpiCard label="Total Providers"    value="312"    change={4.0}  trend="up"      icon={Users}         />
-        <KpiCard label="Quality Composite"  value="88.2"   change={2.1}  trend="up"      icon={Award}         />
-        <KpiCard label="Shared Savings"     value="$7.8M"  change={5.2}  trend="up"      icon={DollarSign}    />
-        <KpiCard label="Savings Rate"       value="4.29%"  change={0.4}  trend="up"      icon={TrendingUp}    />
+        <KpiCard label="Total Providers"    value="312"    change={4.0}  trend="up"      icon={Users}       accent="amber"    />
+        <KpiCard label="Quality Composite"  value="88.2"   change={2.1}  trend="up"      icon={Award}       accent="emerald"  />
+        <KpiCard label="Shared Savings"     value="$7.8M"  change={5.2}  trend="up"      icon={DollarSign}  accent="emerald"  />
+        <KpiCard label="Savings Rate"       value="4.29%"  change={0.4}  trend="up"      icon={TrendingUp}  accent="maroon"   />
       </div>
 
       {/* Charts row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-        <ChartCard title="Savings Rate — Quarterly" subtitle="Actual vs target (%)" className="lg:col-span-2" height={250}>
+        <ChartCard title="Savings Rate — Quarterly" subtitle="Actual vs target (%)" className="lg:col-span-2" height={250} accent="maroon">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={savingsData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
               <CartesianGrid {...GRID} />
@@ -110,12 +107,12 @@ export function AcoDashboard() {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Quality Radar" subtitle="Domain scores — current quarter" height={250}>
+        <ChartCard title="Quality Radar" subtitle="Domain scores" height={250} accent="amber">
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart data={radarData} margin={{ top: 10, right: 20, left: 20, bottom: 10 }}>
-              <PolarGrid stroke="#e2e8f0" />
+              <PolarGrid stroke="#ede8d0" />
               <PolarAngleAxis dataKey="domain" tick={{ fontSize: 10, fill: '#8b7355' }} />
-              <Radar dataKey="score" stroke="#3d1515" fill="#3d1515" fillOpacity={0.15} strokeWidth={2} />
+              <Radar dataKey="score" stroke="#3d1515" fill="#f5a623" fillOpacity={0.2} strokeWidth={2} />
             </RadarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -123,7 +120,7 @@ export function AcoDashboard() {
 
       {/* Charts row 2 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-        <ChartCard title="Expenditure PMPM" subtitle="Benchmark vs actual YTD ($)" height={220}>
+        <ChartCard title="Expenditure PMPM" subtitle="Benchmark vs actual YTD ($)" height={220} accent="maroon">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={expendData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
               <defs>
@@ -143,7 +140,7 @@ export function AcoDashboard() {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Utilization Trends" subtitle="ED visits/1K · Inpatient/1K · Preventive %" height={220}>
+        <ChartCard title="Utilization Trends" subtitle="ED visits/1K · Inpatient/1K · Preventive %" height={220} accent="emerald">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={utilData} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
               <CartesianGrid {...GRID} />
@@ -159,14 +156,15 @@ export function AcoDashboard() {
         </ChartCard>
       </div>
 
-      {/* Provider table */}
-      <Card padding={false}>
-        <div className="px-5 py-4 border-b border-cream-300 flex items-center justify-between">
+      {/* Provider table — with colored header and row accents */}
+      <div className="bg-white rounded-2xl border border-cream-300 overflow-hidden" style={{ boxShadow: '0 2px 8px rgba(61,21,21,0.04)' }}>
+        <div className="h-1 w-full bg-gradient-to-r from-maroon-900 via-amber-400 to-maroon-900" />
+        <div className="px-5 py-4 border-b border-cream-300 flex items-center justify-between bg-gradient-to-r from-cream-100 to-white">
           <div>
-            <h3 className="text-sm font-semibold text-maroon-900">Provider Performance</h3>
+            <h3 className="text-sm font-bold text-maroon-900">Provider Performance</h3>
             <p className="text-xs text-maroon-800/40 mt-0.5">Quality score & cost index — current period</p>
           </div>
-          <Link to="/aco/providers" className="text-xs text-maroon-900 hover:underline font-medium flex items-center gap-1">
+          <Link to="/aco/providers" className="text-xs text-amber-600 hover:text-amber-700 font-semibold flex items-center gap-1 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-lg transition-colors hover:bg-amber-100">
             View all <ArrowRight className="w-3 h-3" />
           </Link>
         </div>
@@ -181,17 +179,25 @@ export function AcoDashboard() {
             </tr>
           </thead>
           <tbody>
-            {providers.map(p => (
-              <tr key={p.name}>
+            {providers.map((p, i) => (
+              <tr key={p.name} className={i % 2 === 0 ? 'bg-cream-50/50' : ''}>
                 <td className="font-medium text-maroon-900">{p.name}</td>
                 <td className="text-maroon-800/60 text-xs">{p.specialty}</td>
                 <td className="text-center">
-                  <span className={`font-bold text-sm ${p.quality >= 90 ? 'text-emerald-600' : p.quality >= 80 ? 'text-maroon-800' : 'text-amber-600'}`}>
+                  <span className={['inline-flex items-center justify-center w-10 h-7 rounded-lg text-xs font-bold',
+                    p.quality >= 90 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                    p.quality >= 80 ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+                    'bg-red-50 text-red-600 border border-red-200',
+                  ].join(' ')}>
                     {p.quality}
                   </span>
                 </td>
                 <td className="text-center">
-                  <span className={`font-bold text-sm ${p.costIndex <= 1 ? 'text-emerald-600' : p.costIndex <= 1.1 ? 'text-amber-600' : 'text-red-500'}`}>
+                  <span className={['inline-flex items-center justify-center w-12 h-7 rounded-lg text-xs font-bold',
+                    p.costIndex <= 1 ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
+                    p.costIndex <= 1.1 ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+                    'bg-red-50 text-red-600 border border-red-200',
+                  ].join(' ')}>
                     {p.costIndex.toFixed(2)}
                   </span>
                 </td>
@@ -200,8 +206,7 @@ export function AcoDashboard() {
             ))}
           </tbody>
         </table>
-      </Card>
+      </div>
     </>
   );
 }
-

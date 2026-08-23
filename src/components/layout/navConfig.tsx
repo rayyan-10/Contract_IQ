@@ -2,7 +2,7 @@ import React from 'react';
 import {
   LayoutDashboard, TrendingUp, AlertTriangle, BarChart3,
   GitBranch, FileText, Users, Network,
-  LineChart, BookOpen, PieChart, Award,
+  LineChart, BookOpen, PieChart, Award, Sliders,
 } from 'lucide-react';
 import type { NavGroup } from '@/types';
 
@@ -17,7 +17,6 @@ export const cmsNavGroups: NavGroup[] = [
       { label: 'Risk Analysis',    path: '/cms/risk',             icon: AlertTriangle   },
       { label: 'Forecast',         path: '/cms/forecast',         icon: BarChart3       },
       { label: 'Twin ACO',         path: '/cms/twin-aco',         icon: GitBranch       },
-      { label: 'Reports',          path: '/cms/reports',          icon: FileText        },
     ],
   },
 ];
@@ -28,9 +27,8 @@ export const acoNavGroups: NavGroup[] = [
     items: [
       { label: 'Dashboard',        path: '/aco/dashboard',         icon: LayoutDashboard },
       { label: 'Analytics',        path: '/aco/analytics',         icon: LineChart },
+      { label: 'What-If Simulator',path: '/aco/what-if',           icon: Sliders },
       { label: 'Providers',        path: '/aco/providers',         icon: Users },
-      { label: 'Peer Benchmarking',path: '/aco/peer-benchmarking', icon: Network },
-      { label: 'Forecast',         path: '/aco/forecast',          icon: BarChart3 },
       { label: 'Reports',          path: '/aco/reports',           icon: BookOpen },
     ],
   },

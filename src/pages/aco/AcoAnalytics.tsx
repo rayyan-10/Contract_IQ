@@ -421,7 +421,7 @@ function CostSection({ data }: { data: ReturnType<typeof getAcoProfile> }) {
 
 export function AcoAnalytics() {
   const { user } = useAuth();
-  const acoId    = user?.acoId ?? 'ACO-001';
+  const acoId    = user?.acoId ?? 'A00001';
   const data     = getAcoProfile(acoId);
   const profile  = data.profile;
 
@@ -431,15 +431,12 @@ export function AcoAnalytics() {
     <>
       <PageHeader
         title="Analytics"
-        subtitle={profile.acoName + ' — ' + profile.trackType}
-        breadcrumb={['ACO Operations', 'Analytics']}
+        subtitle={profile.acoName}
         actions={
           <div className="flex items-center gap-2 text-xs text-maroon-800/40">
             <span className="font-medium text-maroon-800/70">PY {profile.performanceYear}</span>
             <span>·</span>
             <span>{profile.totalBeneficiaries.toLocaleString()} beneficiaries</span>
-            <span>·</span>
-            <span>{profile.totalProviders} providers</span>
           </div>
         }
       />

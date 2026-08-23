@@ -125,7 +125,39 @@ function renderMarkdown(raw: string): React.ReactNode {
 
 // ─── Message bubble ───────────────────────────────────────────────────────────
 
-function MessageBubble({ msg }: { msg: ChatMessage }) {
+// ─── Typewriter for assistant messages ─────────────────────────────────────────
+
+function StreamingMessage({ content }: { content: string }) {
+  const [displayed, setDisplayed] = React.useState('');
+  const [done, setDone] = React.useState(false);
+  const idx = React.useRef(0);
+
+  React.useEffect(() => {
+    setDisplayed('');
+    setDone(false);
+    idx.current = 0;
+    const t = setInterval(() => {
+      idx.current += 3;
+      if (idx.current >= content.length) {
+        setDisplayed(content);
+        setDone(true);
+        clearInterval(t);
+      } else {
+        setDisplayed(content.slice(0, idx.current));
+      }
+    }, 15);
+    return () => clearInterval(t);
+  }, [content]);
+
+  return (
+    <div className="text-maroon-800/80">
+      {renderMarkdown(displayed)}
+      {!done && <span className="inline-block w-[2px] h-3.5 bg-amber-500 ml-0.5 animate-pulse rounded-full align-middle" />}
+    </div>
+  );
+}
+
+function MessageBubble({ msg, isLatest = false }: { msg: ChatMessage; isLatest?: boolean }) {
   const isUser = msg.role === 'user';
   return (
     <div className={['flex gap-2.5', isUser ? 'flex-row-reverse' : 'flex-row'].join(' ')}>
@@ -145,7 +177,9 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
       ].join(' ')} style={!isUser ? { boxShadow: '0 1px 3px rgba(61,21,21,0.04)' } : undefined}>
         {isUser
           ? <p className="text-xs leading-relaxed">{msg.content}</p>
-          : <div className="text-maroon-800/80">{renderMarkdown(msg.content)}</div>}
+          : isLatest
+            ? <StreamingMessage content={msg.content} />
+            : <div className="text-maroon-800/80">{renderMarkdown(msg.content)}</div>}
       </div>
     </div>
   );
@@ -273,7 +307,7 @@ export function AiAssistant() {
             )}
 
             {messages.map((msg, i) => (
-              <MessageBubble key={i} msg={msg} />
+              <MessageBubble key={i} msg={msg} isLatest={i === messages.length - 1 && msg.role === 'assistant'} />
             ))}
 
             {/* Suggested questions — inline after last message */}

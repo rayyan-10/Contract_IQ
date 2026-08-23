@@ -82,9 +82,7 @@ export function QualityPage() {
   return (
     <>
       <PageHeader
-        title="Quality Score Prediction"
-        subtitle="Predict next-year composite quality score for an ACO based on historical data."
-        breadcrumb={['CMS Analytics', 'Quality']}
+        title="Quality Prediction"
         actions={
           result && (
             <Button variant="ghost" size="sm" icon={<RotateCcw className="w-3.5 h-3.5" />} onClick={handleReset}>

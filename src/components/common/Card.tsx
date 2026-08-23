@@ -4,17 +4,21 @@ interface CardProps {
   children: React.ReactNode;
   className?: string;
   padding?: boolean;
+  variant?: 'white' | 'cream';
 }
 
-export function Card({ children, className = '', padding = true }: CardProps) {
+export function Card({ children, className = '', padding = true, variant = 'white' }: CardProps) {
+  const bg = variant === 'cream' ? 'bg-cream-100' : 'bg-white';
+
   return (
     <div
       className={[
-        'bg-white rounded-2xl border border-slate-100',
+        'rounded-2xl border border-cream-300',
+        bg,
         padding ? 'p-5' : '',
         className,
       ].join(' ')}
-      style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02)' }}
+      style={{ boxShadow: '0 1px 4px rgba(61,21,21,0.03)' }}
     >
       {children}
     </div>

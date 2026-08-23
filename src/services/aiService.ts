@@ -50,7 +50,7 @@ export const ACO_SUGGESTIONS: SuggestedQuestion[] = [
 const CMS_RESPONSES: Record<string, { agent: string; content: string }> = {
   'which acos are at highest risk': {
     agent: 'RiskAgent',
-    content: `Based on current performance indicators, three ACOs require immediate attention:\n\n**1. Sunrise Valley ACO (ACO-007)** — Risk Score: 82/100\nPrimary drivers: expenditure growth of 6.4% against a 3.1% benchmark, combined with a widening performance gap of +3.2%.\n\n**2. Gulf Coast Care Network (ACO-012)** — Risk Score: 74/100\nQuality composite has declined 4.1 points over two consecutive quarters. RAF score drift detected.\n\n**3. Mountain West ACO (ACO-019)** — Risk Score: 68/100\nBeneficiary churn rate elevated at 14.2%. Post-acute utilization 28% above benchmark.\n\nRecommendation: Schedule performance reviews for ACO-007 and ACO-012 within the next 30 days.`,
+    content: `Based on current performance indicators, three ACOs require immediate attention:\n\n**1. Sunrise Valley ACO (A00007)** — Risk Score: 82/100\nPrimary drivers: expenditure growth of 6.4% against a 3.1% benchmark, combined with a widening performance gap of +3.2%.\n\n**2. Gulf Coast Care Network (A00003)** — Risk Score: 74/100\nQuality composite has declined 4.1 points over two consecutive quarters. RAF score drift detected.\n\n**3. Mountain West ACO (A00004)** — Risk Score: 68/100\nBeneficiary churn rate elevated at 14.2%. Post-acute utilization 28% above benchmark.\n\nRecommendation: Schedule performance reviews for A00007 and A00003 within the next 30 days.`,
   },
   'why is this aco underperforming': {
     agent: 'FinancialAgent',
@@ -58,11 +58,11 @@ const CMS_RESPONSES: Record<string, { agent: string; content: string }> = {
   },
   'which aco has the largest quality gap': {
     agent: 'QualityAgent',
-    content: `**Largest Quality Gaps — Current Performance Year**\n\nACO with the widest gap: **Eastern Seaboard Health Partners (ACO-003)**\n- Composite Score: 71.4 vs. 84.0 national benchmark → Gap: **-12.6 points**\n- Weakest domain: Care Coordination (62.1 vs. 81.0 benchmark)\n- Preventive care completion rate: 58% vs. 74% target\n\nSecond: **Desert Sun ACO (ACO-021)**\n- Gap: -9.8 points, driven by patient experience scores\n\n**Portfolio average quality gap:** -3.2 points below national benchmark\n\nACOs below the minimum quality threshold for shared savings: 2 of 24`,
+    content: `**Largest Quality Gaps — Current Performance Year**\n\nACO with the widest gap: **Eastern Seaboard Health Partners (A00003)**\n- Composite Score: 71.4 vs. 84.0 national benchmark → Gap: **-12.6 points**\n- Weakest domain: Care Coordination (62.1 vs. 81.0 benchmark)\n- Preventive care completion rate: 58% vs. 74% target\n\nSecond: **Desert Sun ACO (A00008)**\n- Gap: -9.8 points, driven by patient experience scores\n\n**Portfolio average quality gap:** -3.2 points below national benchmark\n\nACOs below the minimum quality threshold for shared savings: 2 of 24`,
   },
   'compare two acos by savings rate': {
     agent: 'FinancialAgent',
-    content: `**ACO Savings Rate Comparison — Top Performers vs. Portfolio Average**\n\n| ACO | Savings Rate | Benchmark | Status |\n|-----|-------------|-----------|--------|\n| Midwest Premier Care (ACO-002) | 6.78% | 3.50% | ✅ Exceeded |\n| Northeast Health Alliance (ACO-001) | 4.29% | 3.50% | ✅ On Track |\n| Portfolio Average | 3.12% | 3.50% | ⚠ Below |\n| Gulf Coast Network (ACO-012) | 1.40% | 3.50% | 🔴 At Risk |\n\nMidwest Premier Care outperforms the portfolio by 3.66 percentage points. Key differentiator: SNF utilization 31% below benchmark and strong care coordination scores (93.2).`,
+    content: `**ACO Savings Rate Comparison — Top Performers vs. Portfolio Average**\n\n| ACO | Savings Rate | Benchmark | Status |\n|-----|-------------|-----------|--------|\n| Midwest Premier Care (A00002) | 6.78% | 3.50% | ✅ Exceeded |\n| Northeast Health Alliance (A00001) | 4.29% | 3.50% | ✅ On Track |\n| Portfolio Average | 3.12% | 3.50% | ⚠ Below |\n| Gulf Coast Network (A00003) | 1.40% | 3.50% | 🔴 At Risk |\n\nMidwest Premier Care outperforms the portfolio by 3.66 percentage points. Key differentiator: SNF utilization 31% below benchmark and strong care coordination scores (93.2).`,
   },
   'what should cms prioritize this quarter': {
     agent: 'RecommendationAgent',

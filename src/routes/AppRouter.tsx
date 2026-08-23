@@ -12,6 +12,9 @@ import { ForecastResultPage } from '@/pages/cms/ForecastResultPage';
 import { TwinResultPage } from '@/pages/cms/TwinResultPage';
 import { AcoDashboard } from '@/pages/aco/AcoDashboard';
 import { AcoAnalytics } from '@/pages/aco/AcoAnalytics';
+import { WhatIfSimulator } from '@/pages/aco/WhatIfSimulator';
+import { ProvidersPage } from '@/pages/aco/ProvidersPage';
+import { ReportsPage } from '@/pages/aco/ReportsPage';
 import { PlaceholderPage } from '@/components/dashboard/PlaceholderPage';
 import { ProtectedRoute, CmsRoute, AcoRoute, RoleRedirect } from './ProtectedRoute';
 
@@ -37,17 +40,15 @@ export function AppRouter() {
               <Route path="/cms/risk"            element={<RiskResultPage />} />
               <Route path="/cms/forecast"        element={<ForecastResultPage />} />
               <Route path="/cms/twin-aco"        element={<TwinResultPage />} />
-              <Route path="/cms/reports"         element={<PlaceholderPage title="Reports"         subtitle="Regulatory and performance reporting suite"           breadcrumb={['CMS Analytics', 'Reports']} />} />
             </Route>
 
             {/* ACO-only routes */}
             <Route element={<AcoRoute />}>
               <Route path="/aco/dashboard"         element={<AcoDashboard />} />
               <Route path="/aco/analytics"         element={<AcoAnalytics />} />
-              <Route path="/aco/providers"         element={<PlaceholderPage title="Providers"         subtitle="Provider performance and attribution management"                    breadcrumb={['ACO Operations', 'Providers']} />} />
-              <Route path="/aco/peer-benchmarking" element={<PlaceholderPage title="Peer Benchmarking" subtitle="Compare performance against peer ACOs and national benchmarks"     breadcrumb={['ACO Operations', 'Peer Benchmarking']} />} />
-              <Route path="/aco/forecast"          element={<PlaceholderPage title="Forecast"          subtitle="Savings trajectory and shared savings projections"                 breadcrumb={['ACO Operations', 'Forecast']} />} />
-              <Route path="/aco/reports"           element={<PlaceholderPage title="Reports"           subtitle="ACO performance and compliance reporting"                          breadcrumb={['ACO Operations', 'Reports']} />} />
+              <Route path="/aco/what-if"           element={<WhatIfSimulator />} />
+              <Route path="/aco/providers"         element={<ProvidersPage />} />
+              <Route path="/aco/reports"           element={<ReportsPage />} />
             </Route>
 
             {/* Role-based root redirect */}

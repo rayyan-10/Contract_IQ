@@ -81,8 +81,8 @@ export function AuthPage() {
 
             {/* Content */}
             <div className="relative z-10 text-center px-12 max-w-md transition-opacity duration-500">
-              <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-amber-400/20 backdrop-blur-sm border border-amber-400/30 mx-auto mb-8 shadow-2xl">
-                <Activity className="w-8 h-8 text-amber-400" strokeWidth={2} />
+              <div className="mx-auto mb-10">
+                <img src="/logo.png" alt="ContractIQ" className="h-36 w-auto mx-auto drop-shadow-[0_8px_24px_rgba(245,166,35,0.3)]" />
               </div>
 
               {isLogin ? (
@@ -152,15 +152,12 @@ function LoginForm({ onSwitchToSignup }: { onSwitchToSignup: () => void }) {
   return (
     <div className="w-full max-w-sm">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 mb-10">
-        <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 shadow-lg shadow-amber-200">
-          <Activity className="w-5 h-5 text-white" strokeWidth={2.5} />
-        </div>
-        <span className="font-bold text-xl text-slate-800 tracking-tight">ContractIQ</span>
+      <div className="mb-8">
+        <img src="/logo.png" alt="ContractIQ" className="h-24 w-auto" />
       </div>
 
-      <h1 className="text-3xl font-bold text-slate-800 mb-2">Sign in</h1>
-      <p className="text-sm text-slate-400 mb-8">Access your analytics workspace</p>
+      <h1 className="text-3xl font-bold text-maroon-900 mb-2">Sign in</h1>
+      <p className="text-sm text-maroon-800/50 mb-8">Access your analytics workspace</p>
 
       {error && (
         <div className="flex items-center gap-2 rounded-xl bg-red-50 border border-red-100 px-4 py-3 mb-5">
@@ -258,13 +255,10 @@ function SignupForm({ onSwitchToLogin }: { onSwitchToLogin: () => void }) {
     return (
       <div className="w-full max-w-md">
         <div className="flex items-center gap-2.5 mb-10 lg:hidden">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-amber-500 shadow-lg shadow-amber-200">
-            <Activity className="w-5 h-5 text-white" strokeWidth={2.5} />
-          </div>
-          <span className="font-bold text-xl text-slate-800">ContractIQ</span>
+          <img src="/logo.png" alt="ContractIQ" className="h-20 w-auto" />
         </div>
-        <h1 className="text-3xl font-bold text-slate-800 mb-2">Create your account</h1>
-        <p className="text-sm text-slate-400 mb-8">Choose your workspace type</p>
+        <h1 className="text-3xl font-bold text-maroon-900 mb-2">Create your account</h1>
+        <p className="text-sm text-maroon-800/50 mb-8">Choose your workspace type</p>
 
         <div className="grid grid-cols-2 gap-4">
           {([

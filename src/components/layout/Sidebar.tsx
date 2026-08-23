@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, X, Activity } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { cmsNavGroups, acoNavGroups } from './navConfig';
 import { useApp } from '@/context/AppContext';
 import { useAuth } from '@/context/AuthContext';
@@ -29,19 +29,15 @@ export function Sidebar({ mobile = false }: SidebarProps) {
       <div className="flex items-center justify-between px-4 h-16 border-b border-white/10 flex-shrink-0">
         {!collapsed && (
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400 flex-shrink-0 shadow-md">
-              <Activity className="w-4 h-4 text-maroon-900" strokeWidth={2.5} />
-            </div>
+            <img src="/logos.png" alt="ContractIQ" className="w-8 h-8 rounded-lg object-contain flex-shrink-0" />
             <div className="min-w-0">
-              <p className="text-sm font-bold text-cream-100 tracking-tight leading-none">ContractIQ</p>
+              <p className="text-base font-bold text-cream-100 tracking-tight leading-none">ContractIQ</p>
               <p className="text-[9px] text-cream-400 mt-0.5 truncate">Analytics Platform</p>
             </div>
           </div>
         )}
         {collapsed && (
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400 mx-auto shadow-md">
-            <Activity className="w-4 h-4 text-maroon-900" strokeWidth={2.5} />
-          </div>
+          <img src="/logos.png" alt="ContractIQ" className="w-8 h-8 rounded-lg object-contain mx-auto" />
         )}
         {!collapsed && (
           mobile ? (

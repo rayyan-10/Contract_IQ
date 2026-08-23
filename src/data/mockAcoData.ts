@@ -108,7 +108,7 @@ export interface AcoAnalyticsData {
 
 const ACO_001_DATA: AcoAnalyticsData = {
   profile: {
-    acoId: 'ACO-001',
+    acoId: 'A00001',
     acoName: 'Northeast Health Alliance ACO',
     trackType: 'MSSP Track 1B',
     performanceYear: 2026,
@@ -220,6 +220,6 @@ function buildFallback(acoId: string, acoName: string): AcoAnalyticsData {
 }
 
 export function getAcoProfile(acoId: string): AcoAnalyticsData {
-  if (acoId === 'ACO-001') return ACO_001_DATA;
+  if (acoId === 'A00001') return ACO_001_DATA;
   return buildFallback(acoId, acoId + ' Network');
 }
